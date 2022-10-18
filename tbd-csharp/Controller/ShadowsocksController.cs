@@ -420,7 +420,7 @@ namespace tbd.Controller
 
         public bool AskAddServerBySSURL(string ssURL)
         {
-            var dr = MessageBox.Show(I18N.GetString("Import from URL: {0} ?", ssURL), I18N.GetString("Shadowsocks"), MessageBoxButtons.YesNo);
+            var dr = MessageBox.Show(I18N.GetString("Import from URL: {0} ?", ssURL), I18N.GetString("TheBigDipper"), MessageBoxButtons.YesNo);
             if (dr == DialogResult.Yes)
             {
                 if (AddServerBySSURL(ssURL))

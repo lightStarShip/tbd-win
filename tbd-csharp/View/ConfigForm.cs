@@ -67,7 +67,7 @@ namespace tbd.View
                 if (!success)
                 {
                     string defaultMethod = Server.DefaultMethod;
-                    MessageBox.Show(I18N.GetString("Encryption method {0} not exist, will replace with {1}", name, defaultMethod), I18N.GetString("Shadowsocks"));
+                    MessageBox.Show(I18N.GetString("Encryption method {0} not exist, will replace with {1}", name, defaultMethod), I18N.GetString("TheBigDipper"));
                     return methodByName[defaultMethod];
                 }
                 return method;

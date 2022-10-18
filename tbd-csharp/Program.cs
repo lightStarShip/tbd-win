@@ -1,22 +1,17 @@
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Pipes;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using CommandLine;
 using Microsoft.Win32;
 using NLog;
-using ReactiveUI;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using tbd.Controller;
 using tbd.Controller.Hotkeys;
 using tbd.Util;
 using tbd.View;
-using Splat;
 using WPFLocalizeExtension.Engine;
 
 namespace tbd
@@ -142,7 +137,7 @@ namespace tbd
                 await MainController.UpdateAllOnlineConfig();
             });
 
-#region IPC Handler and Arguement Process
+            #region IPC Handler and Arguement Process
             IPCService ipcService = new IPCService();
             Task.Run(() => ipcService.RunServer());
             ipcService.OpenUrlRequested += (_1, e) => MainController.AskAddServerBySSURL(e.Url);
@@ -151,8 +146,8 @@ namespace tbd
             {
                 MainController.AskAddServerBySSURL(Options.OpenUrl);
             }
-#endregion
-            
+            #endregion
+
             Application.Run();
 
         }

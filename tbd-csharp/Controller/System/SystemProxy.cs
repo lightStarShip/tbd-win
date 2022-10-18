@@ -67,7 +67,7 @@ namespace tbd.Controller
                 }
                 else
                 {
-                    MessageBox.Show(I18N.GetString("Unrecoverable proxy setting error occured, see log for detail"), I18N.GetString("Shadowsocks"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(I18N.GetString("Unrecoverable proxy setting error occured, see log for detail"), I18N.GetString("TheBigDipper"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

@@ -19,7 +19,7 @@ namespace tbd.Controller
     {
         private const int INT32_LEN = 4;
         private const int OP_OPEN_URL = 1;
-        private static readonly string PIPE_PATH = $"Shadowsocks\\{Program.ExecutablePath.GetHashCode()}";
+        private static readonly string PIPE_PATH = $"TheBigDipper\\{Program.ExecutablePath.GetHashCode()}";
 
         public event EventHandler<RequestAddUrlEventArgs> OpenUrlRequested;
 

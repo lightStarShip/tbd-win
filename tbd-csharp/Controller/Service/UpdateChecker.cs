@@ -21,7 +21,7 @@ namespace tbd.Controller
         private readonly Logger logger;
         private readonly HttpClient httpClient;
 
-        private const string UpdateURL = "https://api.github.com/repos/shadowsocks/shadowsocks-windows/releases";
+        private const string UpdateURL = "https://api.github.com/repos/lightStarShip/tbd-win/releases";
 
         private Configuration _config;
         private Window versionUpdatePromptWindow;

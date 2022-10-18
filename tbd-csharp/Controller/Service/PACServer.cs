@@ -168,7 +168,7 @@ namespace tbd.Controller
                 string pacContent = $"var __PROXY__ = '{proxy}';\n" + _pacDaemon.GetPACContent();
                 string responseHead =
 $@"HTTP/1.1 200 OK
-Server: ShadowsocksWindows/{UpdateChecker.Version}
+Server: TheBigDipperWindows/{UpdateChecker.Version}
 Content-Type: application/x-ns-proxy-autoconfig
 Content-Length: { Encoding.UTF8.GetBytes(pacContent).Length}
 Connection: Close

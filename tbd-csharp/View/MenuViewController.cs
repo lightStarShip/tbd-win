@@ -146,7 +146,7 @@ namespace tbd.View
                 serverInfo = config.GetCurrentServer().ToString();
             }
             // show more info by hacking the P/Invoke declaration for NOTIFYICONDATA inside Windows Forms
-            string text = I18N.GetString("Shadowsocks") + " " + UpdateChecker.Version + "\n" +
+            string text = I18N.GetString("TheBigDipper") + " " + UpdateChecker.Version + "\n" +
                           (enabled ?
                               I18N.GetString("System Proxy On: ") + (global ? I18N.GetString("Global") : I18N.GetString("PAC")) :
                               I18N.GetString("Running: Port {0}", config.localPort))  // this feedback is very important because they need to know Shadowsocks is running
@@ -890,7 +890,7 @@ namespace tbd.View
             string result = e.Success
                 ? I18N.GetString("PAC updated")
                 : I18N.GetString("No updates found. Please report to Geosite if you have problems with it.");
-            ShowBalloonTip(I18N.GetString("Shadowsocks"), result, ToolTipIcon.Info, 1000);
+            ShowBalloonTip(I18N.GetString("TheBigDipper"), result, ToolTipIcon.Info, 1000);
         }
 
         #endregion
@@ -937,7 +937,7 @@ namespace tbd.View
         {
             if (!_isStartupCheck && updateChecker.NewReleaseZipFilename == null)
             {
-                ShowBalloonTip(I18N.GetString("Shadowsocks"), I18N.GetString("No update is available"), ToolTipIcon.Info, 5000);
+                ShowBalloonTip(I18N.GetString("TheBigDipper"), I18N.GetString("No update is available"), ToolTipIcon.Info, 5000);
             }
             _isStartupCheck = false;
         }

@@ -82,7 +82,7 @@ namespace tbd.Controller
                 _tcpSocket.Listen(1024);
 
                 // Start an asynchronous socket to listen for connections.
-                logger.Info($"Shadowsocks started ({UpdateChecker.Version})");
+                logger.Info($"TheBigDipper started ({UpdateChecker.Version})");
                 logger.Debug(Encryption.EncryptorFactory.DumpRegisteredEncryptor());
                 _tcpSocket.BeginAccept(new AsyncCallback(AcceptCallback), _tcpSocket);
                 UDPState udpState = new UDPState(_udpSocket);

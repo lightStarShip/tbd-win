@@ -36,7 +36,7 @@ namespace tbd.Controller
                 RegHotkeyFromString("", "ShowLogsCallback");
                 RegHotkeyFromString("", "ServerMoveUpCallback");
                 RegHotkeyFromString("", "ServerMoveDownCallback");
-                MessageBox.Show(I18N.GetString("Register hotkey failed"), I18N.GetString("Shadowsocks"));
+                MessageBox.Show(I18N.GetString("Register hotkey failed"), I18N.GetString("TheBigDipper"));
             }
         }
 
