@@ -15,7 +15,7 @@ public static class SimpleDelegate
         string dllPath = Utils.GetTempPath(DLLNAME);
         try
         {
-            FileManager.UncompressFile(dllPath, Resources.libsscrypto_dll);
+            FileManager.UncompressFile(dllPath, Resources.libsimple_dll);
         }
         catch (IOException)
         {
@@ -24,13 +24,19 @@ public static class SimpleDelegate
         {
             logger.LogUsefulException(e);
         }
-        LoadLibrary(dllPath);
+        IntPtr dllHandle = LoadLibrary(dllPath);
+        if (dllHandle == IntPtr.Zero)
+            Console.WriteLine($"==============>{ Marshal.GetLastWin32Error().ToString()}");
     }
 
+    public static void StopP()
+    {
+        StopProxy();
+    }
 
     [DllImport("Kernel32.dll")]
     private static extern IntPtr LoadLibrary(string path);
 
-    [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLLNAME, CallingConvention = CallingConvention.StdCall)]
     public static extern void StopProxy();
 }

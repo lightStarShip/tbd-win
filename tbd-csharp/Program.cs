@@ -39,9 +39,6 @@ namespace tbd
         [STAThread]
         private static void Main(string[] args)
         {
-            Console.WriteLine("--------------------------------");
-            SimpleDelegate.StopProxy();
-            Console.WriteLine("--------------------------------");
             #region Single Instance and IPC
             bool hasAnotherInstance = !mutex.WaitOne(TimeSpan.Zero, true);
 

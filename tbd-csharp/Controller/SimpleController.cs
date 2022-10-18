@@ -136,6 +136,10 @@ namespace tbd.Controller
             Reload();
             if (!systemWakeUp)
                 HotkeyReg.RegAllHotkeys();
+
+            Console.WriteLine("--------------------->>>");
+            SimpleDelegate.StopP();
+            Console.WriteLine("--------------------->>>");
         }
 
         public void Stop()
