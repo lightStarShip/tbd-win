@@ -8,7 +8,7 @@ namespace tbd.Controller.Strategy
     class StrategyManager
     {
         List<IStrategy> _strategies;
-        public StrategyManager(ShadowsocksController controller)
+        public StrategyManager(SimpleController controller)
         {
             _strategies = new List<IStrategy>();
             _strategies.Add(new BalancingStrategy(controller));

@@ -12,7 +12,7 @@ namespace tbd.Controller
 {
     class UDPRelay : Listener.Service
     {
-        private ShadowsocksController _controller;
+        private SimpleController _controller;
 
         // TODO: choose a smart number
         private LRUCache<IPEndPoint, UDPHandler> _cache = new LRUCache<IPEndPoint, UDPHandler>(512);
@@ -20,7 +20,7 @@ namespace tbd.Controller
         public long outbound = 0;
         public long inbound = 0;
 
-        public UDPRelay(ShadowsocksController controller)
+        public UDPRelay(SimpleController controller)
         {
             this._controller = controller;
         }

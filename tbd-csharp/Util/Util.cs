@@ -50,7 +50,7 @@ namespace tbd.Util
                     }
                     else
                     {
-                        _tempPath = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), @"Shadowsocks\ss_win_temp_" + Program.ExecutablePath.GetHashCode())).FullName;
+                        _tempPath = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), @"tbd\ss_win_temp_" + Program.ExecutablePath.GetHashCode())).FullName;
                     }
                 }
                 catch (Exception e)

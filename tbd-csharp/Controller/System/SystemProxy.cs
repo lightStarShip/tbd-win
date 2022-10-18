@@ -58,7 +58,7 @@ namespace tbd.Controller
                 logger.LogUsefulException(ex);
                 if (ex.Type != ProxyExceptionType.Unspecific && !noRetry)
                 {
-                    var ret = MessageBox.Show(I18N.GetString("Error occured when process proxy setting, do you want reset current setting and retry?"), I18N.GetString("Shadowsocks"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    var ret = MessageBox.Show(I18N.GetString("Error occured when process proxy setting, do you want reset current setting and retry?"), I18N.GetString("TheBigDipper"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     if (ret == DialogResult.Yes)
                     {
                         Sysproxy.ResetIEProxy();

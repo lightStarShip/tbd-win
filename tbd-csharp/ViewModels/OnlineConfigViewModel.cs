@@ -92,7 +92,7 @@ namespace tbd.ViewModels
         }
 
         private readonly Configuration _config;
-        private readonly ShadowsocksController _controller;
+        private readonly SimpleController _controller;
         private readonly MenuViewController _menuViewController;
 
         public ValidationHelper AddressRule { get; }

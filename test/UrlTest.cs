@@ -115,7 +115,7 @@ namespace TheBigDipper.Test
         [TestMethod]
         public void TestParseUrl_Server1()
         {
-            RunParseShadowsocksUrlTest(
+            RunParseTheBigDipperUrlTest(
                 string.Join(
                     "\r\n",
                     server1CanonUrl,
@@ -131,7 +131,7 @@ namespace TheBigDipper.Test
                     server1WithRemark
                 });
 
-            RunParseShadowsocksUrlTest(
+            RunParseTheBigDipperUrlTest(
                 string.Join(
                     "\r\n",
                     "ss://YmYtY2ZiOnRlc3Q@192.168.100.1:8888",
@@ -159,7 +159,7 @@ namespace TheBigDipper.Test
         [TestMethod]
         public void TestParseUrl_Server2()
         {
-            RunParseShadowsocksUrlTest(
+            RunParseTheBigDipperUrlTest(
                 string.Join(
                     "\r\n",
                     server2CanonUrl,
@@ -175,7 +175,7 @@ namespace TheBigDipper.Test
                     server2WithRemark
                 });
 
-            RunParseShadowsocksUrlTest(
+            RunParseTheBigDipperUrlTest(
                 string.Join(
                     "\r\n",
                     "ss://YmYtY2ZiOnRlc3Q@192.168.1.1:8388",
@@ -212,7 +212,7 @@ namespace TheBigDipper.Test
             RunGenerateShadowsocksUrlTest(generateUrlCases);
         }
 
-        private static void RunParseShadowsocksUrlTest(string testCase, IReadOnlyList<Server> expected)
+        private static void RunParseTheBigDipperUrlTest(string testCase, IReadOnlyList<Server> expected)
         {
             var actual = Server.GetServers(testCase);
             if (actual.Count != expected.Count)

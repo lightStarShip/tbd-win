@@ -16,8 +16,7 @@ History:
 
 The MIT License (MIT)
 
-Copyright (c) 2011-2014 Oleksiy Gapotchenko
-Copyright (c) 2018 Shadowsocks Project
+Copyright (c) 2022 TheBigDipper Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

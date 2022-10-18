@@ -6,7 +6,7 @@ namespace tbd.Controller.Hotkeys
     public class HotkeyCallbacks
     {
 
-        public static void InitInstance(ShadowsocksController controller)
+        public static void InitInstance(SimpleController controller)
         {
             if (Instance != null)
             {
@@ -33,9 +33,9 @@ namespace tbd.Controller.Hotkeys
         
         private static HotkeyCallbacks Instance { get; set; }
 
-        private readonly ShadowsocksController _controller;
+        private readonly SimpleController _controller;
 
-        private HotkeyCallbacks(ShadowsocksController controller)
+        private HotkeyCallbacks(SimpleController controller)
         {
             _controller = controller;
         }

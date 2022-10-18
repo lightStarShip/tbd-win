@@ -15,7 +15,7 @@ namespace tbd.Controller.Hotkeys
         // map key and corresponding handler function
         private static Dictionary<HotKey, HotKeyCallBackHandler> _keymap = new Dictionary<HotKey, HotKeyCallBackHandler>();
 
-        public static void Init(ShadowsocksController controller)
+        public static void Init(SimpleController controller)
         {
             _hotKeyManager = new HotKeyManager();
             _hotKeyManager.KeyPressed += HotKeyManagerPressed;

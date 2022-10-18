@@ -23,7 +23,7 @@ namespace tbd.View
         string filename;
         Timer timer;
         const int BACK_OFFSET = 65536;
-        ShadowsocksController controller;
+        SimpleController controller;
 
         // global traffic update lock, make it static
         private static readonly object _lock = new object();
@@ -41,7 +41,7 @@ namespace tbd.View
         TextAnnotation outboundAnnotation = new TextAnnotation();
         #endregion
 
-        public LogForm(ShadowsocksController controller)
+        public LogForm(SimpleController controller)
         {
             this.controller = controller;
 

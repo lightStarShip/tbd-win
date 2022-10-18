@@ -13,7 +13,7 @@ namespace tbd.Controller.Strategy
 
         protected ServerStatus _currentServer;
         protected Dictionary<Server, ServerStatus> _serverStatus;
-        ShadowsocksController _controller;
+        SimpleController _controller;
         Random _random;
 
         public class ServerStatus
@@ -36,7 +36,7 @@ namespace tbd.Controller.Strategy
             public double score;
         }
 
-        public HighAvailabilityStrategy(ShadowsocksController controller)
+        public HighAvailabilityStrategy(SimpleController controller)
         {
             _controller = controller;
             _random = new Random();

@@ -3,7 +3,7 @@
 // https://github.com/clowwindy/gfwlist2pac
 
 // 2019-10-06: More 'javascript' way to interaction with main program
-// 2019-02-08: Updated to support shadowsocks-windows user rules.
+// 2019-02-08: Updated to support TheBigDipper-windows user rules.
 
 var proxy = __PROXY__;
 var userrules = [];

@@ -27,13 +27,13 @@ namespace tbd.Controller
         public event EventHandler<SSRelayEventArgs> OnFailed;
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly ShadowsocksController _controller;
+        private readonly SimpleController _controller;
         private DateTime _lastSweepTime;
         private readonly Configuration _config;
 
         public ISet<TCPHandler> Handlers { get; set; }
 
-        public TCPRelay(ShadowsocksController controller, Configuration conf)
+        public TCPRelay(SimpleController controller, Configuration conf)
         {
             _controller = controller;
             _config = conf;
@@ -190,7 +190,7 @@ namespace tbd.Controller
 
         public DateTime lastActivity;
 
-        private readonly ShadowsocksController _controller;
+        private readonly SimpleController _controller;
         private readonly ForwardProxyConfig _config;
         private readonly Socket _connection;
 
@@ -244,7 +244,7 @@ namespace tbd.Controller
         private EndPoint _destEndPoint = null;
 
         // TODO: decouple controller
-        public TCPHandler(ShadowsocksController controller, Configuration config, Socket socket)
+        public TCPHandler(SimpleController controller, Configuration config, Socket socket)
         {
             _controller = controller;
             _config = config.proxy;
@@ -441,7 +441,7 @@ namespace tbd.Controller
                 else
                 {
                     Logger.Debug(
-                        "failed to recv data in Shadowsocks.Controller.TCPHandler.handshakeReceive2Callback()");
+                        "failed to recv data in tbd.Controller.TCPHandler.handshakeReceive2Callback()");
                     Close();
                 }
             }
@@ -553,7 +553,7 @@ namespace tbd.Controller
                 }
                 else
                 {
-                    Logger.Debug("failed to recv data in Shadowsocks.Controller.TCPHandler.OnAddressFullyRead()");
+                    Logger.Debug("failed to recv data in tbd.Controller.TCPHandler.OnAddressFullyRead()");
                     Close();
                 }
             }

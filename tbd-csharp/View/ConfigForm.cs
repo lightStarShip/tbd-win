@@ -11,7 +11,7 @@ namespace tbd.View
 {
     public partial class ConfigForm : Form
     {
-        private ShadowsocksController controller;
+        private SimpleController controller;
 
         // this is a copy of configuration that we are working on
         private Configuration _modifiedConfiguration;
@@ -85,7 +85,7 @@ namespace tbd.View
             }
         }
 
-        public ConfigForm(ShadowsocksController controller)
+        public ConfigForm(SimpleController controller)
         {
             Font = SystemFonts.MessageBoxFont;
             InitializeComponent();

@@ -24,7 +24,7 @@ namespace tbd.View
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private ShadowsocksController controller;
+        private SimpleController controller;
         public UpdateChecker updateChecker;
 
         private NotifyIcon _notifyIcon;
@@ -74,7 +74,7 @@ namespace tbd.View
         private readonly Color colorMaskLightSilver = Color.FromArgb(192, 192, 192);
         private readonly Color colorMaskEclipse = Color.FromArgb(192, 64, 64, 64);
 
-        public MenuViewController(ShadowsocksController controller)
+        public MenuViewController(SimpleController controller)
         {
             this.controller = controller;
 
@@ -149,7 +149,7 @@ namespace tbd.View
             string text = I18N.GetString("TheBigDipper") + " " + UpdateChecker.Version + "\n" +
                           (enabled ?
                               I18N.GetString("System Proxy On: ") + (global ? I18N.GetString("Global") : I18N.GetString("PAC")) :
-                              I18N.GetString("Running: Port {0}", config.localPort))  // this feedback is very important because they need to know Shadowsocks is running
+                              I18N.GetString("Running: Port {0}", config.localPort))  // this feedback is very important because they need to know TheBigDipper is running
                           + "\n" + serverInfo;
             if (text.Length > 127)
             {
@@ -338,7 +338,7 @@ namespace tbd.View
 
         void controller_Errored(object sender, ErrorEventArgs e)
         {
-            MessageBox.Show(e.GetException().ToString(), I18N.GetString("Shadowsocks Error: {0}", e.GetException().Message));
+            MessageBox.Show(e.GetException().ToString(), I18N.GetString("TheBigDipper Error: {0}", e.GetException().Message));
         }
 
         private void controller_ConfigChanged(object sender, EventArgs e)
@@ -412,8 +412,8 @@ namespace tbd.View
             {
                 CheckUpdateForFirstRun();
                 ShowBalloonTip(
-                    I18N.GetString("Shadowsocks is here"),
-                    I18N.GetString("You can turn on/off Shadowsocks in the context menu"),
+                    I18N.GetString("TheBigDipper is here"),
+                    I18N.GetString("You can turn on/off TheBigDipper in the context menu"),
                     ToolTipIcon.Info,
                     0
                 );
@@ -872,7 +872,7 @@ namespace tbd.View
             controller.TouchUserRuleFile();
         }
 
-        void controller_FileReadyToOpen(object sender, ShadowsocksController.PathEventArgs e)
+        void controller_FileReadyToOpen(object sender, SimpleController.PathEventArgs e)
         {
             string argument = @"/select, " + e.Path;
 
@@ -970,7 +970,7 @@ namespace tbd.View
 
         private void AboutItem_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/shadowsocks/shadowsocks-windows");
+            Process.Start("https://github.com/lightStarShip/tbd-win");
         }
 
         #endregion

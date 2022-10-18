@@ -9,10 +9,10 @@ namespace tbd.Controller.Strategy
 {
     class BalancingStrategy : IStrategy
     {
-        ShadowsocksController _controller;
+        SimpleController _controller;
         Random _random;
 
-        public BalancingStrategy(ShadowsocksController controller)
+        public BalancingStrategy(SimpleController controller)
         {
             _controller = controller;
             _random = new Random();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -6,21 +7,17 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Windows.Forms;
-using NLog;
 using tbd.Controller.Service;
 using tbd.Controller.Strategy;
 using tbd.Model;
-using tbd.Util;
 using WPFLocalizeExtension.Engine;
 
 namespace tbd.Controller
 {
-    public class ShadowsocksController
+    public class SimpleController
     {
         private readonly Logger logger;
         private readonly HttpClient httpClient;
@@ -89,7 +86,7 @@ namespace tbd.Controller
         public event EventHandler<UpdatedEventArgs> ProgramUpdated;
         #endregion
 
-        public ShadowsocksController()
+        public SimpleController()
         {
             logger = LogManager.GetCurrentClassLogger();
             httpClient = new HttpClient();

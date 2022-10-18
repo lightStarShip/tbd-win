@@ -20,7 +20,7 @@ namespace tbd
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public static ShadowsocksController MainController { get; private set; }
+        public static SimpleController MainController { get; private set; }
         public static MenuViewController MenuController { get; private set; }
         public static CommandLineOption Options { get; private set; }
         public static string[] Args { get; private set; }
@@ -124,7 +124,7 @@ namespace tbd
             if (File.Exists(privoxyLogFilename))
                 using (new FileStream(privoxyLogFilename, FileMode.Truncate)) { }
 #endif
-            MainController = new ShadowsocksController();
+            MainController = new SimpleController();
             MenuController = new MenuViewController(MainController);
 
             HotKeys.Init(MainController);
@@ -161,7 +161,7 @@ namespace tbd
                 logger.Error(errMsg);
                 MessageBox.Show(
                     $"{I18N.GetString("Unexpected error, TheBigDipper will exit. Please report to")} https://github.com/lightStarShip/tbd-win/issues {Environment.NewLine}{errMsg}",
-                    "Shadowsocks non-UI Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "TheBigDipper non-UI Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
         }
@@ -174,7 +174,7 @@ namespace tbd
                 logger.Error(errorMsg);
                 MessageBox.Show(
                     $"{I18N.GetString("Unexpected error, TheBigDipper will exit. Please report to")} https://github.com/lightStarShip/tbd-win/issues {Environment.NewLine}{errorMsg}",
-                    "Shadowsocks UI Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "TheBigDipper UI Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
         }
