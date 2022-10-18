@@ -1,10 +1,4 @@
 ﻿using NLog;
-using tbd.Controller;
-using tbd.Localization;
-using tbd.Model;
-using tbd.Properties;
-using tbd.Util;
-using tbd.Views;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -14,9 +8,12 @@ using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Threading;
-using ZXing;
-using ZXing.Common;
-using ZXing.QrCode;
+using tbd.Controller;
+using tbd.Localization;
+using tbd.Model;
+using tbd.Properties;
+using tbd.Util;
+using tbd.Views;
 
 namespace tbd.View
 {

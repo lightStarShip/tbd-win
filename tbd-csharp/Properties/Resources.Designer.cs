@@ -66,7 +66,7 @@ namespace tbd.Properties {
         ///// https://github.com/clowwindy/gfwlist2pac
         ///
         ///// 2019-10-06: More &apos;javascript&apos; way to interaction with main program
-        ///// 2019-02-08: Updated to support shadowsocks-windows user rules.
+        ///// 2019-02-08: Updated to support TheBigDipper-windows user rules.
         ///
         ///var proxy = __PROXY__;
         ///var userrules = [];
@@ -79,8 +79,7 @@ namespace tbd.Properties {
         ///    if (s.match(re)) s += &quot;^&quot;;
         ///    rules.push(s);
         ///}
-        ///
-        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         public static string abp_js {
             get {
@@ -107,15 +106,25 @@ namespace tbd.Properties {
         ///&quot;#You can find it by search &quot;&quot;Current language is:&quot;&quot;&quot;,,,,,,
         ///#Please use UTF-8 with BOM encoding so we can edit it in Excel,,,,,,
         ///,,,,,,
-        ///Shadowsocks,Shadowsocks,Shadowsocks,Shadowsocks,Shadowsocks,Shadowsocks,Shadowsocks
+        ///TheBigDipper,TheBigDipper,TheBigDipper,TheBigDipper,TheBigDipper,TheBigDipper,TheBigDipper
         ///,,,,,,
         ///#Menu,,,,,,
         ///,,,,,,
-        ///System Proxy,Системный прокси-сервер,系统代理,系統代理,システムプロキシ,시스템 프록시,P [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///System Proxy,Системный прокси-сервер,系统代理,系統代理,システムプロキシ,시스 [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         public static string i18n_csv {
             get {
                 return ResourceManager.GetString("i18n_csv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
+        public static byte[] libsimple_dll {
+            get {
+                object obj = ResourceManager.GetObject("libsimple_dll", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -136,7 +145,7 @@ namespace tbd.Properties {
         ///&lt;nlog xmlns=&quot;http://www.nlog-project.org/schemas/NLog.xsd&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
         ///  &lt;targets&gt;
         ///    &lt;!-- This line is managed by Shadowsocks. Do not modify it unless you know what you are doing.--&gt;
-        ///    &lt;target name=&quot;file&quot; xsi:type=&quot;File&quot; fileName=&quot;ss_win_temp\shadowsocks.log&quot; writ [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///    &lt;target name=&quot;file&quot; xsi:type=&quot;File&quot; fileName=&quot;ss_win_temp\tbd.log&quot; writeBom=&quot;fa [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         public static string NLog_config {
             get {

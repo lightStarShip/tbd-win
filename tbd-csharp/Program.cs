@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using NLog;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -38,6 +39,9 @@ namespace tbd
         [STAThread]
         private static void Main(string[] args)
         {
+            Console.WriteLine("--------------------------------");
+            SimpleDelegate.StopProxy();
+            Console.WriteLine("--------------------------------");
             #region Single Instance and IPC
             bool hasAnotherInstance = !mutex.WaitOne(TimeSpan.Zero, true);
 
