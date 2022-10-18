@@ -2,12 +2,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading;
 using System.Collections.Generic;
-using Shadowsocks.Model;
-using Shadowsocks.Controller.Service;
+using tbd.Model;
+using tbd.Controller.Service;
 using System.Diagnostics;
 using System.Net;
 
-namespace Shadowsocks.Test
+namespace TheBigDipper.Test
 {
     [TestClass]
     public class Sip003PluginTest

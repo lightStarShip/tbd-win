@@ -48,7 +48,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Shadowsocks.Test
+namespace TheBigDipper.Test
 {
     static class ProcessEnvironment
     {

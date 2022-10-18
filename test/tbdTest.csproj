@@ -6,8 +6,8 @@
     <ProjectGuid>{45913187-0685-4903-B250-DCEF0479CD86}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Shadowsocks.Test</RootNamespace>
-    <AssemblyName>Shadowsocks.Test</AssemblyName>
+    <RootNamespace>TheBigDipper.Test</RootNamespace>
+    <AssemblyName>TheBigDipper.Test</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -56,20 +56,29 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ProcessEnvironment.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Sip003PluginTest.cs" />
     <Compile Include="UrlTest.cs" />
     <Compile Include="UnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\shadowsocks-csharp\tbd-csharp.csproj">
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\tbd-csharp\tbd-csharp.csproj">
       <Project>{8c02d2f7-7cdb-4d55-9f25-cd03ef4aa062}</Project>
       <Name>tbd-csharp</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

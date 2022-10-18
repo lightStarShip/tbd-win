@@ -1,15 +1,15 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shadowsocks.Controller;
+using tbd.Controller;
 using GlobalHotKey;
 using System.Windows.Input;
 using System.Threading;
 using System.Collections.Generic;
-using Shadowsocks.Controller.Hotkeys;
+using tbd.Controller.Hotkeys;
 using System.Diagnostics;
 
 
-namespace Shadowsocks.Test
+namespace TheBigDipper.Test
 {
     [TestClass]
     public class UnitTest

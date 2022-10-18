@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shadowsocks.Controller;
+using tbd.Controller;
 using System.Threading;
 using System.Collections.Generic;
-using Shadowsocks.Model;
+using tbd.Model;
 using System.Diagnostics;
 
-namespace Shadowsocks.Test
+namespace TheBigDipper.Test
 {
     [TestClass]
     public class UrlTest
