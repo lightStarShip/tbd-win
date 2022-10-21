@@ -3,7 +3,6 @@ using Microsoft.Win32;
 using NLog;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.IO;
 using System.Net;
 using System.Threading;

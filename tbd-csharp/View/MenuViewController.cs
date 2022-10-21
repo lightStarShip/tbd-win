@@ -56,6 +56,7 @@ namespace tbd.View
         private MenuItem ShowPluginOutputToggleItem;
         private MenuItem WriteI18NFileItem;
         private MenuItem onlineConfigItem;
+        private MenuItem startStopItem;
 
         private ConfigForm configForm;
         private LogForm logForm;
@@ -66,10 +67,10 @@ namespace tbd.View
         private System.Windows.Window onlineConfigWindow;
 
         // color definition for icon color transformation
-        private readonly Color colorMaskBlue = Color.FromArgb(255, 25, 125, 191);
+        private readonly Color colorMaskBlue = Color.FromArgb(255, 255, 213, 34);
         private readonly Color colorMaskDarkSilver = Color.FromArgb(128, 192, 192, 192);
         private readonly Color colorMaskLightSilver = Color.FromArgb(192, 192, 192);
-        private readonly Color colorMaskEclipse = Color.FromArgb(192, 64, 64, 64);
+        private readonly Color colorMaskEclipse = Color.FromArgb(192, 64, 64, 64);//255,193,193,188
 
         public MenuViewController(SimpleController controller)
         {
@@ -254,6 +255,9 @@ namespace tbd.View
         private void LoadMenu()
         {
             this.contextMenu1 = new ContextMenu(new MenuItem[] {
+
+                this.startStopItem = CreateMenuItem("Start", new EventHandler(this.Start_Stop)),
+
                 CreateMenuGroup("System Proxy", new MenuItem[] {
                     this.disableItem = CreateMenuItem("Disable", new EventHandler(this.EnableItem_Click)),
                     this.PACModeItem = CreateMenuItem("PAC", new EventHandler(this.PACModeItem_Click)),
@@ -581,6 +585,11 @@ namespace tbd.View
                 MessageBox.Show(I18N.GetString("Failed to update registry"));
             }
             LoadCurrentConfiguration();
+        }
+
+
+        private void Start_Stop(object sender, EventArgs e)
+        {
         }
 
         private void Quit_Click(object sender, EventArgs e)

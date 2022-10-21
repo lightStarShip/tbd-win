@@ -1,11 +1,11 @@
-using tbd.Controller;
-using tbd.Model;
-using tbd.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using tbd.Controller;
+using tbd.Model;
+using tbd.Properties;
 
 namespace tbd.View
 {

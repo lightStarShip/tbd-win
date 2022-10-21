@@ -97,7 +97,7 @@ namespace tbd.Model
                 "geolocation-!cn",
             };
             geositePreferDirect = false;
-            userAgent = "ShadowsocksWindows/$version";
+            userAgent = "SimpleWindows/$version";
 
             logViewer = new LogViewerConfig();
             proxy = new ForwardProxyConfig();
@@ -324,7 +324,7 @@ namespace tbd.Model
 
         public static void ResetUserAgent(Configuration config)
         {
-            config.userAgent = "ShadowsocksWindows/$version";
+            config.userAgent = "SimpleWindows/$version";
             config.userAgentString = config.userAgent.Replace("$version", config.version);
         }
 
