@@ -104,6 +104,8 @@ namespace tbd.Controller
 
                 logger.Info($"Updated from {e.OldVersion} to {e.NewVersion}");
             };
+
+            SimpleDelegate.InitLib();
         }
 
         #region Basic
@@ -136,8 +138,6 @@ namespace tbd.Controller
             Reload();
             if (!systemWakeUp)
                 HotkeyReg.RegAllHotkeys();
-
-            SimpleDelegate.TestLib();
         }
 
         public void Stop()
