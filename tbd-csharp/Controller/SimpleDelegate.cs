@@ -16,27 +16,34 @@ public static class SimpleDelegate
         try
         {
             FileManager.UncompressFile(dllPath, Resources.libsimple_dll);
+
+            IntPtr dllHandle = DllUtils.LoadLibrary(dllPath);
+            if (dllHandle == IntPtr.Zero)
+            {
+                Console.WriteLine($"---------------------->{ Marshal.GetLastWin32Error()}");
+            }
         }
-        catch (IOException)
+        catch (IOException e)
         {
+            logger.LogUsefulException(e);
         }
         catch (System.Exception e)
         {
             logger.LogUsefulException(e);
         }
-        IntPtr dllHandle = LoadLibrary(dllPath);
-        if (dllHandle == IntPtr.Zero)
-            Console.WriteLine($"==============>{ Marshal.GetLastWin32Error().ToString()}");
     }
 
-    public static void StopP()
+    public static void TestLib()
     {
-        StopProxy();
+        Console.WriteLine($"======1================>>>>{LibIsOpen()}");
+        PrintBye();
+        Console.WriteLine($"---------------------->{ Marshal.GetLastWin32Error()}");
+        Console.WriteLine($"======2================>>>>");
     }
+    
+    [DllImport(DLLNAME, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+    public static extern void PrintBye();
 
-    [DllImport("Kernel32.dll")]
-    private static extern IntPtr LoadLibrary(string path);
-
-    [DllImport(DLLNAME, CallingConvention = CallingConvention.StdCall)]
-    public static extern void StopProxy();
+    [DllImport(DLLNAME, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+    public static extern byte LibIsOpen();
 }

@@ -137,9 +137,7 @@ namespace tbd.Controller
             if (!systemWakeUp)
                 HotkeyReg.RegAllHotkeys();
 
-            Console.WriteLine("--------------------->>>");
-            SimpleDelegate.StopP();
-            Console.WriteLine("--------------------->>>");
+            SimpleDelegate.TestLib();
         }
 
         public void Stop()

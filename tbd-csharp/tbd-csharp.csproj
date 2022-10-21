@@ -69,6 +69,27 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caseless, Version=1.9.0.0, Culture=neutral, PublicKeyToken=409b3227471b0f0d, processorArchitecture=MSIL">
       <HintPath>..\packages\Caseless.Fody.1.9.0\lib\net452\Caseless.dll</HintPath>
@@ -285,6 +306,7 @@
     <Compile Include="Proxy\Socks5Proxy.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Controller\System\Hotkeys\Hotkeys.cs" />
+    <Compile Include="Util\DllUtils.cs" />
     <Compile Include="Util\ProcessManagement\Job.cs" />
     <Compile Include="Util\ProcessManagement\ThreadUtil.cs" />
     <Compile Include="Util\Sockets\LineReader.cs" />
