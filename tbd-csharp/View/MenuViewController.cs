@@ -59,6 +59,7 @@ namespace tbd.View
         private MenuItem startStopItem;
 
         private ConfigForm configForm;
+        private WalletImport walletImportForm;
         private LogForm logForm;
 
         private System.Windows.Window serverSharingWindow;
@@ -115,6 +116,10 @@ namespace tbd.View
             {
                 _isStartupCheck = true;
                 Dispatcher.CurrentDispatcher.Invoke(() => updateChecker.CheckForVersionUpdate(3000));
+            }
+            if (!SimpleDelegate.HasWallet())
+            {
+                ShowImportWalletForm();
             }
         }
 
@@ -383,6 +388,21 @@ namespace tbd.View
             }
         }
 
+        private void ShowImportWalletForm()
+        {
+            if (walletImportForm != null)
+            {
+                walletImportForm.Activate();
+            }
+            else
+            {
+                walletImportForm = new WalletImport(controller);
+                walletImportForm.Show();
+                walletImportForm.Activate();
+                walletImportForm.FormClosed += importForm_FormClosed;
+            }
+        }
+
         private void ShowLogForm()
         {
             if (logForm != null)
@@ -402,6 +422,12 @@ namespace tbd.View
         {
             logForm.Dispose();
             logForm = null;
+        }
+
+        void importForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            walletImportForm.Dispose();
+            walletImportForm = null;
         }
 
         void configForm_FormClosed(object sender, FormClosedEventArgs e)

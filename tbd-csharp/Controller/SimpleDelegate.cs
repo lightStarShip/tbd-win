@@ -79,9 +79,9 @@ namespace tbd.Controller
 #endif
         }
 
-        public static bool hasWallet()
+        public static bool HasWallet()
         {
-            return wallet.Address.Length > 0;
+            return wallet.Address != null && wallet.Address.Length > 0;
         }
 
 
