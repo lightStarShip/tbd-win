@@ -399,7 +399,6 @@
     <None Include="Model\Geosite\geosite.proto" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\libsimple.h" />
     <Content Include="tbd.ico" />
     <None Include="Data\sysproxy.exe.gz" />
     <None Include="Data\sysproxy64.exe.gz" />

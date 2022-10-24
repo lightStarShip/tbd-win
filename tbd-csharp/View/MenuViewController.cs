@@ -68,7 +68,7 @@ namespace tbd.View
         private System.Windows.Window onlineConfigWindow;
 
         // color definition for icon color transformation
-        private readonly Color colorMaskBlue = Color.FromArgb(255, 255, 213, 34);
+        private readonly Color colorMaskOn = Color.FromArgb(255, 255, 213, 34);
         private readonly Color colorMaskDarkSilver = Color.FromArgb(128, 192, 192, 192);
         private readonly Color colorMaskLightSilver = Color.FromArgb(192, 192, 192);
         private readonly Color colorMaskEclipse = Color.FromArgb(192, 64, 64, 64);//255,193,193,188
@@ -192,7 +192,22 @@ namespace tbd.View
             }
             return size;
         }
+        private Color SetStatusColorMask(bool curStatus)
+        {
+            Color colorMask = Color.White;
+            if (curStatus)
+            {
+                return colorMaskOn;
+            }
 
+            Utils.WindowsThemeMode currentWindowsThemeMode = Utils.GetWindows10SystemThemeSetting();
+            if (currentWindowsThemeMode == Utils.WindowsThemeMode.Light)
+            {
+                return colorMaskDarkSilver;
+            }
+
+            return colorMaskLightSilver;
+        }
         private Color SelectColorMask(bool isProxyEnabled, bool isGlobalProxy)
         {
             Color colorMask = Color.White;
@@ -203,7 +218,7 @@ namespace tbd.View
             {
                 if (isGlobalProxy)  // global
                 {
-                    colorMask = colorMaskBlue;
+                    colorMask = colorMaskOn;
                 }
                 else  // PAC
                 {
@@ -614,8 +629,35 @@ namespace tbd.View
         }
 
 
+
         private void Start_Stop(object sender, EventArgs e)
         {
+            bool curStatus = SimpleDelegate.IsProxySet();
+            
+            bool success = SimpleDelegate.SetSysProxy(!curStatus);
+
+            if (!success){
+                MessageBox.Show("Set System Proxy failed", "Error");
+                return;
+            }
+
+            success = SimpleDelegate.StartSimpleProtocol();
+            if (!success)
+            {
+                MessageBox.Show("Start Local Proxy failed", "Error");
+                return;
+            }
+
+            SimpleDelegate.StartSimpleProtocol();
+            if (curStatus)
+            {
+                this.startStopItem.Text = "Start";
+            }
+            else
+            {
+                this.startStopItem.Text = "Stop";
+            }
+            SetStatusColorMask(!curStatus);
         }
 
         private void Quit_Click(object sender, EventArgs e)

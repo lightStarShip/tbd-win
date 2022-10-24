@@ -6,6 +6,7 @@ using tbd.Properties;
 using tbd.Util;
 using Newtonsoft.Json;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace tbd.Controller
 {
@@ -57,6 +58,8 @@ namespace tbd.Controller
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private const string DLLNAME = "libsimple.dll";
         private static readonly string Wallet_FILE = "wallet.json";
+        private static CallBackLog logcb = new CallBackLog(LogFunc);
+        private static UIAPI api = new UIAPI(ApiFunc);
 
         static SimpleDelegate()
         {
@@ -80,6 +83,8 @@ namespace tbd.Controller
                 logger.LogUsefulException(e);
             }
         }
+
+        #region Simple Protocol Lib
 
         private static void LoadWallet()
         {
@@ -108,10 +113,7 @@ namespace tbd.Controller
         }
 
         public static void InitLib()
-        {
-
-            CallBackLog logcb = new CallBackLog(LogFunc);
-            UIAPI api = new UIAPI(ApiFunc);
+        {            
 #if DEBUG
             InitLibWin(1, 0, "https://lightstarship.github.io", ref api, ref logcb);
 #else
@@ -128,10 +130,17 @@ namespace tbd.Controller
         {
             return LibIsOpen() != 0;
         }
+
+        public static bool StartSimpleProtocol()
+        {
+            string lclProxy = $"{ProxyIP}:{ProxyPort}";
+            return StartProxyWin(lclProxy, "45.77.104.235", "SVEG15KMztpcmACzrr9fftZMta8Hcq3wv37nzayiggNNKk");
+        }
+
         public static string ApiFunc(string msg)
         {
             Console.WriteLine($"======ApiFunc================>>>>{msg}");
-            return "test from charp$$$$$$$";
+            return "";
         }
 
         public static void LogFunc(string log)
@@ -158,5 +167,61 @@ namespace tbd.Controller
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
         public static extern bool OpenWalletWin(string walletData, string pwd);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+        public static extern bool StartProxyWin(string localProxy, string nodeIP, string nodeID); 
+
+        #endregion
+
+        #region system proxy settings
+        [DllImport("wininet.dll")]
+        public static extern bool InternetSetOption
+          (IntPtr hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
+        public const int INTERNET_OPTION_SETTINGS_CHANGED = 39;
+        public const int INTERNET_OPTION_REFRESH = 37;
+
+        private const string ProxyIP = "127.0.0.1";
+        private const short ProxyPort = 31080;
+
+        public static bool SetSysProxy(bool on)
+        {
+            RegistryKey registry = Registry.CurrentUser.OpenSubKey
+               ("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true);
+            bool settingsReturn, refreshReturn;
+            if (on){ 
+                registry.SetValue("ProxyEnable", 1);
+                registry.SetValue
+                ("ProxyServer", $"{ProxyIP}:{ProxyPort}");
+                if ((int)registry.GetValue("ProxyEnable", 0) == 0)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                registry.SetValue("ProxyEnable", 0);
+                registry.SetValue("ProxyServer", 0);
+                if ((int)registry.GetValue("ProxyEnable", 1) == 1)
+                {
+                    return false;
+                }
+            }
+            registry.Close();
+            settingsReturn = InternetSetOption
+            (IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
+            refreshReturn = InternetSetOption
+            (IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
+            Console.WriteLine($"return values settingsReturn={settingsReturn} refreshReturn={refreshReturn}");
+            return refreshReturn && settingsReturn;
+        }
+        
+        public static bool IsProxySet()
+        {
+            RegistryKey registry = Registry.CurrentUser.OpenSubKey
+               ("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true);
+            return (int)registry.GetValue("ProxyEnable", 1) == 1;
+        }
+
+        #endregion
     }
 }
