@@ -66,6 +66,7 @@ namespace tbd
 
             #region Enviroment Setup
             Directory.SetCurrentDirectory(WorkingDirectory);
+            Console.WriteLine($"======>>> current work directory:{WorkingDirectory}");
             // todo: initialize the NLog configuartion
             Model.NLogConfig.TouchAndApplyNLogConfig();
 

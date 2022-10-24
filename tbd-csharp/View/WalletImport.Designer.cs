@@ -29,41 +29,30 @@ namespace tbd.View
         /// </summary>
         private void InitializeComponent()
         {
-            this.pathofQR = new System.Windows.Forms.Label();
             this.loadByQR = new System.Windows.Forms.Button();
             this.importWallet = new System.Windows.Forms.Button();
             this.walletDataText = new System.Windows.Forms.TextBox();
-            this.ImportImage = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // pathofQR
-            // 
-            this.pathofQR.AutoSize = true;
-            this.pathofQR.Location = new System.Drawing.Point(10, 379);
-            this.pathofQR.Name = "pathofQR";
-            this.pathofQR.Size = new System.Drawing.Size(101, 12);
-            this.pathofQR.TabIndex = 1;
-            this.pathofQR.Text = "path of qr image";
             // 
             // loadByQR
             // 
-            this.loadByQR.Location = new System.Drawing.Point(259, 374);
+            this.loadByQR.Location = new System.Drawing.Point(122, 310);
             this.loadByQR.Name = "loadByQR";
-            this.loadByQR.Size = new System.Drawing.Size(75, 23);
+            this.loadByQR.Size = new System.Drawing.Size(214, 23);
             this.loadByQR.TabIndex = 3;
-            this.loadByQR.Text = "find QR Image";
+            this.loadByQR.Text = "Import By QR Code";
             this.loadByQR.UseVisualStyleBackColor = true;
-            this.loadByQR.Click += new System.EventHandler(this.loadQRImage);
+            this.loadByQR.Click += new System.EventHandler(this.FindQRImgPath);
             // 
             // importWallet
             // 
-            this.importWallet.Location = new System.Drawing.Point(202, 253);
+            this.importWallet.Location = new System.Drawing.Point(175, 253);
             this.importWallet.Name = "importWallet";
             this.importWallet.Size = new System.Drawing.Size(132, 23);
             this.importWallet.TabIndex = 4;
             this.importWallet.Text = "import By Data ";
             this.importWallet.UseVisualStyleBackColor = true;
-            this.importWallet.Click += new System.EventHandler(this.importThisAccount);
+            this.importWallet.Click += new System.EventHandler(this.ImportByJsonData);
             // 
             // walletDataText
             // 
@@ -73,38 +62,24 @@ namespace tbd.View
             this.walletDataText.Size = new System.Drawing.Size(465, 210);
             this.walletDataText.TabIndex = 5;
             // 
-            // ImportImage
-            // 
-            this.ImportImage.Location = new System.Drawing.Point(358, 374);
-            this.ImportImage.Name = "ImportImage";
-            this.ImportImage.Size = new System.Drawing.Size(75, 23);
-            this.ImportImage.TabIndex = 6;
-            this.ImportImage.Text = "Import";
-            this.ImportImage.UseVisualStyleBackColor = true;
-            this.ImportImage.Click += new System.EventHandler(this.ImportImage_Click);
-            // 
             // WalletImport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(489, 466);
-            this.Controls.Add(this.ImportImage);
+            this.ClientSize = new System.Drawing.Size(489, 369);
             this.Controls.Add(this.walletDataText);
             this.Controls.Add(this.importWallet);
             this.Controls.Add(this.loadByQR);
-            this.Controls.Add(this.pathofQR);
             this.Name = "WalletImport";
-            this.Text = "WalletImport";
+            this.Text = " ";
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label pathofQR;
         private System.Windows.Forms.Button loadByQR;
         private System.Windows.Forms.Button importWallet;
         private System.Windows.Forms.TextBox walletDataText;
-        private System.Windows.Forms.Button ImportImage;
     }
 }
