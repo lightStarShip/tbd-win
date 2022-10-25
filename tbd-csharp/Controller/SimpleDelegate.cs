@@ -208,7 +208,13 @@ namespace tbd.Controller
 
         public const string ProxyIP = "127.0.0.1";
         public const short ProxyPort = 31080;
-
+        public struct Struct_INTERNET_PROXY_INFO
+        {
+            public int dwAccessType;
+            public IntPtr proxy;
+            public IntPtr proxyBypass;
+        };
+        //set ALL_PROXY=socks5://127.0.0.1:31080
         public static bool SetSysProxy(bool on)
         {
             RegistryKey registry = Registry.CurrentUser.OpenSubKey
@@ -217,7 +223,7 @@ namespace tbd.Controller
             if (on){ 
                 registry.SetValue("ProxyEnable", 1);
                 registry.SetValue
-                ("ProxyServer", $"{ProxyIP}:{ProxyPort}");
+                ("ProxyServer", $"SOCKS5={ProxyIP}:{ProxyPort}");
                 if ((int)registry.GetValue("ProxyEnable", 0) == 0)
                 {
                     return false;
@@ -237,7 +243,7 @@ namespace tbd.Controller
             (IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
             refreshReturn = InternetSetOption
             (IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
-            Console.WriteLine($"return values settingsReturn={settingsReturn} refreshReturn={refreshReturn}");
+            Console.WriteLine($"------>>>return values settingsReturn={settingsReturn} refreshReturn={refreshReturn}");
             return refreshReturn && settingsReturn;
         }
         
