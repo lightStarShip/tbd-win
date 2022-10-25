@@ -71,9 +71,12 @@ namespace tbd.Controller
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private const string DLLNAME = "libsimple.dll";
         private static readonly string Wallet_FILE = "wallet.json";
-        private static CallBackLog logcb = new CallBackLog(LogFunc);
-        private static UIAPI api = new UIAPI(ApiFunc);
-
+        private static CallBackLog simpleLogCB = new CallBackLog(LogFunc);
+        private static UIAPI simpleCallbackAPI = new UIAPI(ApiFunc);
+        public static string CmdLine = "set ALL_PROXY=socks5://127.0.0.1:31080";
+        private static string exceptionStr = "<local>;localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;" +
+            "172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;" +
+            "172.29.*;172.30.*;172.31.*;192.168.*";
         static SimpleDelegate()
         {
             string dllPath = Utils.GetTempPath(DLLNAME);
@@ -128,7 +131,7 @@ namespace tbd.Controller
         public static void InitLib()
         {            
 #if DEBUG
-            InitLibWin(1, 0, "https://lightstarship.github.io", ref api, ref logcb);
+            InitLibWin(1, 0, "https://lightstarship.github.io", ref simpleCallbackAPI, ref simpleLogCB);
 #else
         InitLibWin(0, 1, "https://lightstarship.github.io", ref api, ref logcb);
 #endif
@@ -214,7 +217,7 @@ namespace tbd.Controller
             public IntPtr proxy;
             public IntPtr proxyBypass;
         };
-        //set ALL_PROXY=socks5://127.0.0.1:31080
+        //
         public static bool SetSysProxy(bool on)
         {
             RegistryKey registry = Registry.CurrentUser.OpenSubKey
@@ -223,7 +226,7 @@ namespace tbd.Controller
             if (on){ 
                 registry.SetValue("ProxyEnable", 1);
                 registry.SetValue ("ProxyServer", $"SOCKS5={ProxyIP}:{ProxyPort}");
-                registry.SetValue("ProxyOverride", "<local>;localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*");
+                registry.SetValue("ProxyOverride", exceptionStr);
                 if ((int)registry.GetValue("ProxyEnable", 0) == 0)
                 {
                     return false;
