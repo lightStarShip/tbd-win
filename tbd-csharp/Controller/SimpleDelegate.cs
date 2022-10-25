@@ -222,8 +222,8 @@ namespace tbd.Controller
             bool settingsReturn, refreshReturn;
             if (on){ 
                 registry.SetValue("ProxyEnable", 1);
-                registry.SetValue
-                ("ProxyServer", $"SOCKS5={ProxyIP}:{ProxyPort}");
+                registry.SetValue ("ProxyServer", $"SOCKS5={ProxyIP}:{ProxyPort}");
+                registry.SetValue("ProxyOverride", "<local>;localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*");
                 if ((int)registry.GetValue("ProxyEnable", 0) == 0)
                 {
                     return false;
@@ -233,6 +233,7 @@ namespace tbd.Controller
             {
                 registry.SetValue("ProxyEnable", 0);
                 registry.SetValue("ProxyServer", 0);
+                registry.SetValue("ProxyOverride", "");
                 if ((int)registry.GetValue("ProxyEnable", 1) == 1)
                 {
                     return false;
