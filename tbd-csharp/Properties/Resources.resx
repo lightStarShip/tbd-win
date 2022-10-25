@@ -139,6 +139,17 @@
   <data name="privoxy_conf" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\data\privoxy_conf.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+	
+    <data name="dns_conf" type="System.Resources.ResXFileRef, System.Windows.Forms">
+	    <value>..\data\rule.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    </data>
+    <data name="must_hit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+	    <value>..\data\must_hit.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    </data>
+    <data name="bypass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+	    <value>..\data\bypass2.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    </data>
+	
   <data name="privoxy_exe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\data\privoxy.exe.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

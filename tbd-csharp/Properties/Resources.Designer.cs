@@ -88,12 +88,104 @@ namespace tbd.Properties {
         }
         
         /// <summary>
+        ///   查找类似 1.0.1.0/24
+        ///1.0.2.0/23
+        ///1.0.8.0/21
+        ///1.0.32.0/19
+        ///1.1.0.0/24
+        ///1.1.2.0/23
+        ///1.1.4.0/22
+        ///1.1.8.0/24
+        ///1.1.9.0/24
+        ///1.1.10.0/23
+        ///1.1.12.0/22
+        ///1.1.16.0/20
+        ///1.1.32.0/19
+        ///1.2.0.0/23
+        ///1.2.2.0/24
+        ///1.2.4.0/24
+        ///1.2.5.0/24
+        ///1.2.6.0/23
+        ///1.2.8.0/24
+        ///1.2.9.0/24
+        ///1.2.10.0/23
+        ///1.2.12.0/22
+        ///1.2.16.0/20
+        ///1.2.32.0/19
+        ///1.2.64.0/18
+        ///1.3.0.0/16
+        ///1.4.1.0/24
+        ///1.4.2.0/23
+        ///1.4.4.0/24
+        ///1.4.5.0/24
+        ///1.4.6.0/23
+        ///1.4.8.0/21
+        ///1.4.16.0/20
+        ///1.4.32.0/19
+        ///1.4.64.0/18
+        ///1.8.0.0/16
+        ///1.10.0.0/21
+        ///1.10.8.0/23
+        ///1.10.11.0/24
+        ///1.10.12.0/22
+        ///1.10.16.0/20
+        ///1.10.32.0/19
+        ///1.10.64.0/18
+        ///1.12.0.0/14
+        ///1. [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        public static string bypass {
+            get {
+                return ResourceManager.GetString("bypass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
         public static byte[] dlc_dat {
             get {
                 object obj = ResourceManager.GetObject("dlc_dat", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 \.pinterest.com\.
+        ///\.medium.com\.
+        ///\.telegram.org\.
+        ///\.gimpshop.com\.
+        ///\.directcreative.com\.
+        ///\.speedpluss.org\.
+        ///\.mingpaovan.com\.
+        ///\.wikinews.org\.
+        ///\.joachims.org\.
+        ///\.maiio.net\.
+        ///\.idv.tw\.
+        ///\.mail-archive.com\.
+        ///\.surfeasy.com.au\.
+        ///\.hihistory.net\.
+        ///\.alexlur.org\.
+        ///\.finalion.jp\.
+        ///\.nrk.no\.
+        ///\.tumblr.com\.
+        ///\.nyt.com\.
+        ///\.cmule.com\.
+        ///\.gappp.org\.
+        ///\.givemesomethingtoread.com\.
+        ///\.yahoo.com.tw\.
+        ///\.robtex.com\.
+        ///\.thelifeyoucansave.com\.
+        ///\.perfspot.com\.
+        ///\.ugo.com\.
+        ///\.army.mil\.
+        ///\.amoiist.com\.
+        ///\.uderzo.it\.
+        ///\.zillio [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        public static string dns_conf {
+            get {
+                return ResourceManager.GetString("dns_conf", resourceCulture);
             }
         }
         
@@ -135,6 +227,27 @@ namespace tbd.Properties {
             get {
                 object obj = ResourceManager.GetObject("libsscrypto_dll", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 67.198.55.0/24
+        ///91.108.4.0/22
+        ///91.108.8.0/22
+        ///91.108.12.0/22
+        ///91.108.16.0/22
+        ///91.108.20.0/22
+        ///91.108.56.0/22
+        ///95.161.64.0/20
+        ///109.239.140.0/24
+        ///149.154.160.0/22
+        ///149.154.164.0/22
+        ///149.154.168.0/22
+        ///149.154.172.0/22 的本地化字符串。
+        /// </summary>
+        public static string must_hit {
+            get {
+                return ResourceManager.GetString("must_hit", resourceCulture);
             }
         }
         

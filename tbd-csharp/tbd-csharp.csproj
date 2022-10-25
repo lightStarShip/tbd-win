@@ -399,6 +399,9 @@
     <None Include="Model\Geosite\geosite.proto" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\bypass2.txt" />
+    <Content Include="Data\must_hit.txt" />
+    <Content Include="Data\rule.txt" />
     <Content Include="tbd.ico" />
     <None Include="Data\sysproxy.exe.gz" />
     <None Include="Data\sysproxy64.exe.gz" />

@@ -92,7 +92,7 @@ namespace tbd.View
             controller.UpdatePACFromGeositeError += controller_UpdatePACFromGeositeError;
 
             _notifyIcon = new NotifyIcon();
-            UpdateTrayIconAndNotifyText();
+            UpdateTrayIconAndNotifyTextForSimple(false);
             _notifyIcon.Visible = true;
             _notifyIcon.ContextMenu = contextMenu1;
             _notifyIcon.BalloonTipClicked += notifyIcon1_BalloonTipClicked;
@@ -124,6 +124,30 @@ namespace tbd.View
         }
 
         #region Tray Icon
+
+
+        private void UpdateTrayIconAndNotifyTextForSimple(bool isOn)
+        {
+            this.startStopItem.Text = isOn ? "Stop" : "Start";
+
+            Color colorMask = SetStatusColorMask(isOn);
+            Size iconSize = SelectIconSize();
+
+            UpdateIconSet(colorMask, iconSize, out icon, out icon_in, out icon_out, out icon_both);
+
+            previousIcon = icon;
+            _notifyIcon.Icon = previousIcon;
+          
+            // show more info by hacking the P/Invoke declaration for NOTIFYICONDATA inside Windows Forms
+            string text = I18N.GetString("TheBigDipper") + " " + UpdateChecker.Version + "\n" +
+                          (isOn ? I18N.GetString("System Proxy On: " + $"{SimpleDelegate.ProxyIP}:{SimpleDelegate.ProxyPort}") :
+                          I18N.GetString("System Proxy Off"));
+            if (text.Length > 127)
+            {
+                text = text.Substring(0, 126 - 3) + "...";
+            }
+            ViewUtils.SetNotifyIconText(_notifyIcon, text);
+        }
 
         private void UpdateTrayIconAndNotifyText()
         {
@@ -194,7 +218,6 @@ namespace tbd.View
         }
         private Color SetStatusColorMask(bool curStatus)
         {
-            Color colorMask = Color.White;
             if (curStatus)
             {
                 return colorMaskOn;
@@ -274,6 +297,11 @@ namespace tbd.View
 
         private void LoadMenu()
         {
+            bool curStatus = SimpleDelegate.IsProxySet();
+            if (curStatus)
+            {
+                SimpleDelegate.SetSysProxy(false);
+            }
             this.contextMenu1 = new ContextMenu(new MenuItem[] {
 
                 this.startStopItem = CreateMenuItem("Start", new EventHandler(this.Start_Stop)),
@@ -483,13 +511,14 @@ namespace tbd.View
         {
         }
 
+        //TODO::
         private void notifyIcon1_Click(object sender, MouseEventArgs e)
         {
-            UpdateTrayIconAndNotifyText();
+            /*UpdateTrayIconAndNotifyText();
             if (e.Button == MouseButtons.Middle)
             {
                 ShowLogForm();
-            }
+            }*/
         }
 
         private void notifyIcon1_DoubleClick(object sender, MouseEventArgs e)
@@ -628,8 +657,6 @@ namespace tbd.View
             LoadCurrentConfiguration();
         }
 
-
-
         private void Start_Stop(object sender, EventArgs e)
         {
             bool curStatus = SimpleDelegate.IsProxySet();
@@ -641,23 +668,18 @@ namespace tbd.View
                 return;
             }
 
-            success = SimpleDelegate.StartSimpleProtocol();
-            if (!success)
-            {
-                MessageBox.Show("Start Local Proxy failed", "Error");
-                return;
-            }
-
-            SimpleDelegate.StartSimpleProtocol();
             if (curStatus)
             {
-                this.startStopItem.Text = "Start";
+                SimpleDelegate.StopProxy();
+            } else { 
+                success = SimpleDelegate.StartSimpleProtocol();
+                if (!success)
+                {
+                    MessageBox.Show("Start Local Proxy failed", "Error");
+                    return;
+                }
             }
-            else
-            {
-                this.startStopItem.Text = "Stop";
-            }
-            SetStatusColorMask(!curStatus);
+            UpdateTrayIconAndNotifyTextForSimple(!curStatus);
         }
 
         private void Quit_Click(object sender, EventArgs e)

@@ -12,6 +12,19 @@ namespace tbd.Controller
 {
     public static class SimpleDelegate
     {
+        public class ApiCmd
+        {
+            public int cmd;
+            public static ApiCmd Parse(string json)
+            {
+                ApiCmd cmd = JsonConvert.DeserializeObject<ApiCmd>(json, new JsonSerializerSettings()
+                {
+                    ObjectCreationHandling = ObjectCreationHandling.Replace
+                });
+
+                return cmd;
+            }
+        }
         public class Wallet
         {
             [JsonIgnore]
@@ -139,12 +152,23 @@ namespace tbd.Controller
 
         public static string ApiFunc(string msg)
         {
-            Console.WriteLine($"======ApiFunc================>>>>{msg}");
-            return "";
+            ApiCmd cmd = ApiCmd.Parse(msg);
+            switch (cmd.cmd)
+            {
+                case 1:
+                    //Console.WriteLine($"======ApiFunc1================>>>>{Resources.dns_conf}");
+                    return Resources.dns_conf;
+                case 2:
+                    //Console.WriteLine($"======ApiFunc2================>>>>{Resources.bypass}");
+                    return Resources.bypass;
+                default:
+                    return "";
+            }
         }
 
         public static void LogFunc(string log)
         {
+            Console.WriteLine(log);
             logger.Info(log);
         }
 
@@ -169,8 +193,10 @@ namespace tbd.Controller
         public static extern bool OpenWalletWin(string walletData, string pwd);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
-        public static extern bool StartProxyWin(string localProxy, string nodeIP, string nodeID); 
+        public static extern bool StartProxyWin(string localProxy, string nodeIP, string nodeID);
 
+        [DllImport(DLLNAME, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+        public static extern void StopProxy();
         #endregion
 
         #region system proxy settings
@@ -180,8 +206,8 @@ namespace tbd.Controller
         public const int INTERNET_OPTION_SETTINGS_CHANGED = 39;
         public const int INTERNET_OPTION_REFRESH = 37;
 
-        private const string ProxyIP = "127.0.0.1";
-        private const short ProxyPort = 31080;
+        public const string ProxyIP = "127.0.0.1";
+        public const short ProxyPort = 31080;
 
         public static bool SetSysProxy(bool on)
         {
