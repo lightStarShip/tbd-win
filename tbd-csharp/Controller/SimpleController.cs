@@ -22,10 +22,6 @@ namespace tbd.Controller
         private readonly Logger logger;
         private readonly HttpClient httpClient;
 
-        // controller:
-        // handle user actions
-        // manipulates UI
-        // interacts with low level logic
         #region Members definition
         private Thread _trafficThread;
 

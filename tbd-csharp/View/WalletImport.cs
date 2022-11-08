@@ -12,11 +12,9 @@ namespace tbd.View
 {
     public partial class WalletImport : Form
     {
-        private SimpleController controller;
-        public WalletImport(SimpleController controller)
+        public WalletImport()
         {
             InitializeComponent();
-            this.controller = controller;
         }
 
         private void FindQRImgPath(object sender, EventArgs e)
@@ -67,7 +65,9 @@ namespace tbd.View
                 MessageBox.Show(I18N.GetString("Load Wallet Failed"), I18N.GetString("Tips"));
                 return;
             }
-            SimpleDelegate.wallet.SaveToDisk(wData, passwrod);
+            SimpleDelegate.wallet.RawData = wData;
+            SimpleDelegate.wallet.Pwd = passwrod;
+            SimpleDelegate.wallet.SaveToDisk();
             MessageBox.Show(I18N.GetString("Load Wallet Success"), I18N.GetString("Tips"));
             this.Close();
         }

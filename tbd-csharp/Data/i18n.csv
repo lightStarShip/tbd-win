@@ -12,6 +12,10 @@ TheBigDipper,TheBigDipper,TheBigDipper,TheBigDipper,TheBigDipper,TheBigDipper,Th
 ,,,,,,
 System Proxy,Системный прокси-сервер,系统代理,系統代理,システムプロキシ,시스템 프록시,Proxy système
 Disable,Отключен,禁用,禁用,無効,비활성화,Désactiver
+Start,,启动,,,,
+Stop,,关闭,,,,
+Command Line,,命令行指令,,,,
+Account,,账号信息,,,,
 PAC,Сценарий настройки (PAC),PAC 模式,PAC 模式,PACモード,프록시 자동 구성 (PAC),PAC
 Global,Для всей системы,全局模式,全局模式,グローバルプロキシ,전역,Global
 Servers,Серверы,服务器,伺服器,サーバー,서버,Serveurs

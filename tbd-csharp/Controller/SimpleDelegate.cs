@@ -25,40 +25,6 @@ namespace tbd.Controller
                 return cmd;
             }
         }
-        public class Wallet
-        {
-            [JsonIgnore]
-            public string Address;
-            public string RawData;
-            public string Pwd;
-            public void SaveToDisk(string data, string pwd)
-            {
-                this.RawData = data;
-                this.Pwd = pwd;
-
-                FileStream wFileStream = null;
-                StreamWriter wStreamWriter = null;
-                try
-                {
-                    wFileStream = File.Open(Wallet_FILE, FileMode.Create);
-                    wStreamWriter = new StreamWriter(wFileStream);
-                    var jsonString = JsonConvert.SerializeObject(this, Formatting.Indented);
-                    wStreamWriter.Write(jsonString);
-                    wStreamWriter.Flush();
-                }
-                catch (Exception e)
-                {
-                    logger.LogUsefulException(e);
-                }
-                finally
-                {
-                    if (wStreamWriter != null)
-                        wStreamWriter.Dispose();
-                    if (wFileStream != null)
-                        wFileStream.Dispose();
-                }
-            }
-        }
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate string UIAPI(string msg);
@@ -67,10 +33,10 @@ namespace tbd.Controller
         public delegate void CallBackLog(string msg);
 
         public static Wallet wallet;
+        public static Stripe stripe;
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private const string DLLNAME = "libsimple.dll";
-        private static readonly string Wallet_FILE = "wallet.json";
         private static CallBackLog simpleLogCB = new CallBackLog(LogFunc);
         private static UIAPI simpleCallbackAPI = new UIAPI(ApiFunc);
         public static string CmdLine = "set ALL_PROXY=socks5://127.0.0.1:31080";
@@ -102,40 +68,15 @@ namespace tbd.Controller
 
         #region Simple Protocol Lib
 
-        private static void LoadWallet()
-        {
-            if (false == File.Exists(Wallet_FILE))
-            {
-                wallet = new Wallet();
-                return;
-            }
-
-            string content = File.ReadAllText(Wallet_FILE);
-            wallet = JsonConvert.DeserializeObject<Wallet>(content, new JsonSerializerSettings()
-            {
-                ObjectCreationHandling = ObjectCreationHandling.Replace
-            });
-            if (true == OpenWalletWin(wallet.RawData, wallet.Pwd))
-            {
-                IntPtr wPtr = LibWalletAddress();;
-                wallet.Address = Marshal.PtrToStringAnsi(wPtr);
-                wallet.Pwd = "";
-                Console.WriteLine($"================>>>{wallet.Address}");
-                return;
-            }
-
-            MessageBox.Show("Failed Open Wallet", "Error");
-            wallet = new Wallet();
-        }
-
         public static void InitLib()
         {            
 #if DEBUG
             InitLibWin(1, 0, "https://lightstarship.github.io", ref simpleCallbackAPI, ref simpleLogCB);
 #else
-        InitLibWin(0, 1, "https://lightstarship.github.io", ref api, ref logcb);
+        InitLibWin(0, 1, "https://lightstarship.github.io", ref simpleCallbackAPI, ref simpleLogCB);
 #endif
-            LoadWallet();
+            wallet = Wallet.LoadWallet();
+            stripe = Stripe.LoadStripe(wallet.Address);
         }
 
         public static bool HasWallet()
@@ -198,6 +139,13 @@ namespace tbd.Controller
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
         public static extern bool StartProxyWin(string localProxy, string nodeIP, string nodeID);
 
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+        public static extern IntPtr StripeBasic(string wAddr, string cusID);
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+        public static extern float BalanceWin(Int64 expireDay);
+        
+
         [DllImport(DLLNAME, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         public static extern void StopProxy();
         #endregion
@@ -226,7 +174,6 @@ namespace tbd.Controller
             bool settingsReturn, refreshReturn;
             if (on){ 
                 registry.SetValue("ProxyEnable", 1);
-                //registry.SetValue ("ProxyServer", $"SOCKS5={ProxyIP}:{ProxyPort}");
                 registry.SetValue("ProxyServer", $"http://localhost:{PirvoxyPort}");
                 registry.SetValue("ProxyOverride", exceptionStr);
                 if ((int)registry.GetValue("ProxyEnable", 0) == 0)

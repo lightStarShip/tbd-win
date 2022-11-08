@@ -273,6 +273,22 @@ namespace tbd.Util
             return null;
         }
 
+        public static Bitmap ToImage(string code, int size = 180)
+        {
+            BarcodeWriter writer = new BarcodeWriter();
+            QrCodeEncodingOptions qr = new QrCodeEncodingOptions()
+            {
+                CharacterSet = "UTF-8",
+                ErrorCorrection = ZXing.QrCode.Internal.ErrorCorrectionLevel.H,
+                Height = size,
+                Width = size,
+            };
+            writer.Options = qr;
+            writer.Format = BarcodeFormat.QR_CODE;
+            Bitmap bitmap = writer.Write(code);
+            return bitmap;
+        }
+
         // See: https://msdn.microsoft.com/en-us/library/hh925568(v=vs.110).aspx
         public static bool IsSupportedRuntimeVersion()
         {

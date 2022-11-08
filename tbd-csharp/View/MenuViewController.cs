@@ -31,35 +31,14 @@ namespace tbd.View
         private string _urlToOpen;
 
         private ContextMenu contextMenu1;
-        private MenuItem disableItem;
-        private MenuItem AutoStartupItem;
-        private MenuItem ProtocolHandlerItem;
-        private MenuItem ShareOverLANItem;
         private MenuItem SeperatorItem;
         private MenuItem ConfigItem;
         private MenuItem ServersItem;
-        private MenuItem globalModeItem;
-        private MenuItem PACModeItem;
-        private MenuItem localPACItem;
-        private MenuItem onlinePACItem;
-        private MenuItem editLocalPACItem;
-        private MenuItem updateFromGeositeItem;
-        private MenuItem editGFWUserRuleItem;
-        private MenuItem editOnlinePACItem;
-        private MenuItem secureLocalPacUrlToggleItem;
-        private MenuItem regenerateLocalPacOnUpdateItem;
-        private MenuItem autoCheckUpdatesToggleItem;
-        private MenuItem checkPreReleaseToggleItem;
-        private MenuItem proxyItem;
-        private MenuItem hotKeyItem;
-        private MenuItem VerboseLoggingToggleItem;
-        private MenuItem ShowPluginOutputToggleItem;
-        private MenuItem WriteI18NFileItem;
-        private MenuItem onlineConfigItem;
         private MenuItem startStopItem;
 
         private ConfigForm configForm;
         private WalletImport walletImportForm;
+        private AccountDetails accountDetalsForm;
         private LogForm logForm;
 
         private System.Windows.Window serverSharingWindow;
@@ -79,14 +58,9 @@ namespace tbd.View
 
             LoadMenu();
 
-            controller.EnableStatusChanged += controller_EnableStatusChanged;
             controller.ConfigChanged += controller_ConfigChanged;
             controller.PACFileReadyToOpen += controller_FileReadyToOpen;
             controller.UserRuleFileReadyToOpen += controller_FileReadyToOpen;
-            controller.ShareOverLANStatusChanged += controller_ShareOverLANStatusChanged;
-            controller.VerboseLoggingStatusChanged += controller_VerboseLoggingStatusChanged;
-            controller.ShowPluginOutputChanged += controller_ShowPluginOutputChanged;
-            controller.EnableGlobalChanged += controller_EnableGlobalChanged;
             controller.Errored += controller_Errored;
             controller.UpdatePACFromGeositeCompleted += controller_UpdatePACFromGeositeCompleted;
             controller.UpdatePACFromGeositeError += controller_UpdatePACFromGeositeError;
@@ -128,7 +102,7 @@ namespace tbd.View
 
         private void UpdateTrayIconAndNotifyTextForSimple(bool isOn)
         {
-            this.startStopItem.Text = isOn ? "Stop" : "Start";
+            this.startStopItem.Text = isOn ? I18N.GetString("Stop") : I18N.GetString("Start");
 
             Color colorMask = SetStatusColorMask(isOn);
             Size iconSize = SelectIconSize();
@@ -305,12 +279,6 @@ namespace tbd.View
             this.contextMenu1 = new ContextMenu(new MenuItem[] {
 
                 this.startStopItem = CreateMenuItem("Start", new EventHandler(this.Start_Stop)),
-
-                CreateMenuGroup("System Proxy", new MenuItem[] {
-                    this.disableItem = CreateMenuItem("Disable", new EventHandler(this.EnableItem_Click)),
-                    this.PACModeItem = CreateMenuItem("PAC", new EventHandler(this.PACModeItem_Click)),
-                    this.globalModeItem = CreateMenuItem("Global", new EventHandler(this.GlobalModeItem_Click))
-                }),
                 this.ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
                     this.SeperatorItem = new MenuItem("-"),
                     this.ConfigItem = CreateMenuItem("Edit Servers...", new EventHandler(this.Config_Click)),
@@ -319,22 +287,10 @@ namespace tbd.View
                     CreateMenuItem("Scan QRCode from Screen...", new EventHandler(this.ScanQRCodeItem_Click)),
                     CreateMenuItem("Import URL from Clipboard...", new EventHandler(this.ImportURLItem_Click))
                 }),
-                CreateMenuGroup("PAC ", new MenuItem[] {
-                    this.localPACItem = CreateMenuItem("Local PAC", new EventHandler(this.LocalPACItem_Click)),
-                    this.onlinePACItem = CreateMenuItem("Online PAC", new EventHandler(this.OnlinePACItem_Click)),
-                    new MenuItem("-"),
-                    this.editLocalPACItem = CreateMenuItem("Edit Local PAC File...", new EventHandler(this.EditPACFileItem_Click)),
-                    this.updateFromGeositeItem = CreateMenuItem("Update Local PAC from Geosite", new EventHandler(this.UpdatePACFromGeositeItem_Click)),
-                    this.editGFWUserRuleItem = CreateMenuItem("Edit User Rule for Geosite...", new EventHandler(this.EditUserRuleFileForGeositeItem_Click)),
-                    this.secureLocalPacUrlToggleItem = CreateMenuItem("Secure Local PAC", new EventHandler(this.SecureLocalPacUrlToggleItem_Click)),
-                    this.regenerateLocalPacOnUpdateItem = CreateMenuItem("Regenerate local PAC on version update", new EventHandler(this.RegenerateLocalPacOnUpdateItem_Click)),
-                    CreateMenuItem("Copy Local PAC URL", new EventHandler(this.CopyLocalPacUrlItem_Click)),
-                    this.editOnlinePACItem = CreateMenuItem("Edit Online PAC URL...", new EventHandler(this.UpdateOnlinePACURLItem_Click)),
-                }),
-                this.proxyItem = CreateMenuItem("Forward Proxy...", new EventHandler(this.proxyItem_Click)),
-                this.onlineConfigItem = CreateMenuItem("Online Config...", new EventHandler(this.OnlineConfig_Click)),
+                CreateMenuItem("Account", new EventHandler(this.ShowAccountDetails)),
+                CreateMenuItem("Command Line", new EventHandler(this.CopyCmdLine)),
                 new MenuItem("-"),
-                this.AutoStartupItem = CreateMenuItem("Start on Boot", new EventHandler(this.AutoStartupItem_Click)),
+                /*this.AutoStartupItem = CreateMenuItem("Start on Boot", new EventHandler(this.AutoStartupItem_Click)),
                 this.ProtocolHandlerItem = CreateMenuItem("Associate ss:// Links", new EventHandler(this.ProtocolHandlerItem_Click)),
                 this.ShareOverLANItem = CreateMenuItem("Allow other Devices to connect", new EventHandler(this.ShareOverLANItem_Click)),
                 new MenuItem("-"),
@@ -351,7 +307,10 @@ namespace tbd.View
                         this.checkPreReleaseToggleItem = CreateMenuItem("Check Pre-release Version", new EventHandler(this.checkPreReleaseToggleItem_Click)),
                     }),
                     CreateMenuItem("About...", new EventHandler(this.AboutItem_Click)),
-                }),
+                }),*/
+
+                CreateMenuItem("Updates...", new EventHandler(this.checkUpdatesItem_Click)),
+                CreateMenuItem("About...", new EventHandler(this.AboutItem_Click)),
                 new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(this.Quit_Click))
             });
@@ -400,18 +359,6 @@ namespace tbd.View
         {
             Configuration config = controller.GetCurrentConfiguration();
             UpdateServersMenu();
-            UpdateSystemProxyItemsEnabledStatus(config);
-            ShareOverLANItem.Checked = config.shareOverLan;
-            VerboseLoggingToggleItem.Checked = config.isVerboseLogging;
-            ShowPluginOutputToggleItem.Checked = config.showPluginOutput;
-            AutoStartupItem.Checked = AutoStartup.Check();
-            ProtocolHandlerItem.Checked = ProtocolHandler.Check();
-            onlinePACItem.Checked = onlinePACItem.Enabled && config.useOnlinePac;
-            localPACItem.Checked = !onlinePACItem.Checked;
-            secureLocalPacUrlToggleItem.Checked = config.secureLocalPac;
-            regenerateLocalPacOnUpdateItem.Checked = config.regeneratePacOnUpdate;
-            UpdatePACItemsEnabledStatus();
-            UpdateUpdateMenu();
         }
 
         #region Forms
@@ -439,7 +386,7 @@ namespace tbd.View
             }
             else
             {
-                walletImportForm = new WalletImport(controller);
+                walletImportForm = new WalletImport();
                 walletImportForm.Show();
                 walletImportForm.Activate();
                 walletImportForm.FormClosed += importForm_FormClosed;
@@ -547,11 +494,6 @@ namespace tbd.View
 
         #region Main menu
 
-        void controller_ShareOverLANStatusChanged(object sender, EventArgs e)
-        {
-            ShareOverLANItem.Checked = controller.GetCurrentConfiguration().shareOverLan;
-        }
-
         private void proxyItem_Click(object sender, EventArgs e)
         {
             if (forwardProxyWindow == null)
@@ -631,32 +573,6 @@ namespace tbd.View
 
         public void CloseHotkeysWindow() => hotkeysWindow.Close();
 
-        private void ShareOverLANItem_Click(object sender, EventArgs e)
-        {
-            ShareOverLANItem.Checked = !ShareOverLANItem.Checked;
-            controller.ToggleShareOverLAN(ShareOverLANItem.Checked);
-        }
-
-        private void AutoStartupItem_Click(object sender, EventArgs e)
-        {
-            AutoStartupItem.Checked = !AutoStartupItem.Checked;
-            if (!AutoStartup.Set(AutoStartupItem.Checked))
-            {
-                MessageBox.Show(I18N.GetString("Failed to update registry"));
-            }
-            LoadCurrentConfiguration();
-        }
-
-        private void ProtocolHandlerItem_Click(object sender, EventArgs e)
-        {
-            ProtocolHandlerItem.Checked = !ProtocolHandlerItem.Checked;
-            if (!ProtocolHandler.Set(ProtocolHandlerItem.Checked))
-            {
-                MessageBox.Show(I18N.GetString("Failed to update registry"));
-            }
-            LoadCurrentConfiguration();
-        }
-
         private void Start_Stop(object sender, EventArgs e)
         {
             bool curStatus = SimpleDelegate.IsProxySet();
@@ -681,65 +597,37 @@ namespace tbd.View
             }
             UpdateTrayIconAndNotifyTextForSimple(!curStatus);
         }
+        
+        private void ShowAccountDetails(object sender, EventArgs e)
+        {
+            if (accountDetalsForm != null)
+            {
+                accountDetalsForm.Activate();
+            }
+            else
+            {
+                accountDetalsForm = new AccountDetails();
+                accountDetalsForm.Show();
+                accountDetalsForm.Activate();
+                accountDetalsForm.FormClosed += accountFormClose;
+            }
+        }
+
+        void accountFormClose(object sender, FormClosedEventArgs e)
+        {
+            accountDetalsForm.Dispose();
+            accountDetalsForm = null;
+        }
+        private void CopyCmdLine(object sender, EventArgs e)
+        {
+            Clipboard.SetText(SimpleDelegate.CmdLine);
+        }
 
         private void Quit_Click(object sender, EventArgs e)
         {
             controller.Stop();
             _notifyIcon.Visible = false;
             Application.Exit();
-        }
-
-        #endregion
-
-        #region System proxy
-
-        private void controller_EnableStatusChanged(object sender, EventArgs e)
-        {
-            disableItem.Checked = !controller.GetCurrentConfiguration().enabled;
-        }
-
-        private void EnableItem_Click(object sender, EventArgs e)
-        {
-            controller.ToggleEnable(false);
-            Configuration config = controller.GetCurrentConfiguration();
-            UpdateSystemProxyItemsEnabledStatus(config);
-        }
-
-        void controller_EnableGlobalChanged(object sender, EventArgs e)
-        {
-            globalModeItem.Checked = controller.GetCurrentConfiguration().global;
-            PACModeItem.Checked = !globalModeItem.Checked;
-        }
-
-        private void UpdateSystemProxyItemsEnabledStatus(Configuration config)
-        {
-            disableItem.Checked = !config.enabled;
-            if (!config.enabled)
-            {
-                globalModeItem.Checked = false;
-                PACModeItem.Checked = false;
-            }
-            else
-            {
-                globalModeItem.Checked = config.global;
-                PACModeItem.Checked = !config.global;
-            }
-        }
-
-        private void GlobalModeItem_Click(object sender, EventArgs e)
-        {
-            controller.ToggleEnable(true);
-            controller.ToggleGlobal(true);
-            Configuration config = controller.GetCurrentConfiguration();
-            UpdateSystemProxyItemsEnabledStatus(config);
-        }
-
-        private void PACModeItem_Click(object sender, EventArgs e)
-        {
-            controller.ToggleEnable(true);
-            controller.ToggleGlobal(false);
-            Configuration config = controller.GetCurrentConfiguration();
-            UpdateSystemProxyItemsEnabledStatus(config);
         }
 
         #endregion
@@ -876,35 +764,6 @@ namespace tbd.View
 
         #region PAC
 
-        private void LocalPACItem_Click(object sender, EventArgs e)
-        {
-            if (!localPACItem.Checked)
-            {
-                localPACItem.Checked = true;
-                onlinePACItem.Checked = false;
-                controller.UseOnlinePAC(false);
-                UpdatePACItemsEnabledStatus();
-            }
-        }
-
-        private void OnlinePACItem_Click(object sender, EventArgs e)
-        {
-            if (!onlinePACItem.Checked)
-            {
-                if (string.IsNullOrEmpty(controller.GetCurrentConfiguration().pacUrl))
-                {
-                    UpdateOnlinePACURLItem_Click(sender, e);
-                }
-                if (!string.IsNullOrEmpty(controller.GetCurrentConfiguration().pacUrl))
-                {
-                    localPACItem.Checked = false;
-                    onlinePACItem.Checked = true;
-                    controller.UseOnlinePAC(true);
-                }
-                UpdatePACItemsEnabledStatus();
-            }
-        }
-
         private void UpdateOnlinePACURLItem_Click(object sender, EventArgs e)
         {
             string origPacUrl = controller.GetCurrentConfiguration().pacUrl;
@@ -935,23 +794,6 @@ namespace tbd.View
             controller.CopyPacUrl();
         }
 
-        private void UpdatePACItemsEnabledStatus()
-        {
-            if (this.localPACItem.Checked)
-            {
-                this.editLocalPACItem.Enabled = true;
-                this.updateFromGeositeItem.Enabled = true;
-                this.editGFWUserRuleItem.Enabled = true;
-                this.editOnlinePACItem.Enabled = false;
-            }
-            else
-            {
-                this.editLocalPACItem.Enabled = false;
-                this.updateFromGeositeItem.Enabled = false;
-                this.editGFWUserRuleItem.Enabled = false;
-                this.editOnlinePACItem.Enabled = true;
-            }
-        }
 
         private void EditPACFileItem_Click(object sender, EventArgs e)
         {
@@ -993,33 +835,13 @@ namespace tbd.View
 
         #region Help
 
-        void controller_VerboseLoggingStatusChanged(object sender, EventArgs e)
-        {
-            VerboseLoggingToggleItem.Checked = controller.GetCurrentConfiguration().isVerboseLogging;
-        }
-
-        void controller_ShowPluginOutputChanged(object sender, EventArgs e)
-        {
-            ShowPluginOutputToggleItem.Checked = controller.GetCurrentConfiguration().showPluginOutput;
-        }
-
-        private void VerboseLoggingToggleItem_Click(object sender, EventArgs e)
-        {
-            VerboseLoggingToggleItem.Checked = !VerboseLoggingToggleItem.Checked;
-            controller.ToggleVerboseLogging(VerboseLoggingToggleItem.Checked);
-        }
 
         private void ShowLogItem_Click(object sender, EventArgs e)
         {
             ShowLogForm();
         }
 
-        private void ShowPluginOutputToggleItem_Click(object sender, EventArgs e)
-        {
-            ShowPluginOutputToggleItem.Checked = !ShowPluginOutputToggleItem.Checked;
-            controller.ToggleShowPluginOutput(ShowPluginOutputToggleItem.Checked);
-        }
-
+   
         private void WriteI18NFileItem_Click(object sender, EventArgs e)
         {
             File.WriteAllText(I18N.I18N_FILE, Resources.i18n_csv, Encoding.UTF8);
@@ -1036,27 +858,6 @@ namespace tbd.View
                 ShowBalloonTip(I18N.GetString("TheBigDipper"), I18N.GetString("No update is available"), ToolTipIcon.Info, 5000);
             }
             _isStartupCheck = false;
-        }
-
-        private void UpdateUpdateMenu()
-        {
-            Configuration configuration = controller.GetCurrentConfiguration();
-            autoCheckUpdatesToggleItem.Checked = configuration.autoCheckUpdate;
-            checkPreReleaseToggleItem.Checked = configuration.checkPreRelease;
-        }
-
-        private void autoCheckUpdatesToggleItem_Click(object sender, EventArgs e)
-        {
-            Configuration configuration = controller.GetCurrentConfiguration();
-            controller.ToggleCheckingUpdate(!configuration.autoCheckUpdate);
-            UpdateUpdateMenu();
-        }
-
-        private void checkPreReleaseToggleItem_Click(object sender, EventArgs e)
-        {
-            Configuration configuration = controller.GetCurrentConfiguration();
-            controller.ToggleCheckingPreRelease(!configuration.checkPreRelease);
-            UpdateUpdateMenu();
         }
 
         private async void checkUpdatesItem_Click(object sender, EventArgs e)

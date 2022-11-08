@@ -239,6 +239,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\Stripe.cs" />
+    <Compile Include="Controller\Wallet.cs" />
+    <Compile Include="View\AccountDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\AccountDetails.Designer.cs">
+      <DependentUpon>AccountDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommandLineOption.cs" />
     <Compile Include="Controller\HotkeyReg.cs" />
     <Compile Include="Controller\LoggerExtension.cs" />
@@ -371,6 +379,9 @@
     <EmbeddedResource Include="Localization\Strings.ru.resx" />
     <EmbeddedResource Include="Localization\Strings.zh-Hans.resx" />
     <EmbeddedResource Include="Localization\Strings.zh-Hant.resx" />
+    <EmbeddedResource Include="View\AccountDetails.resx">
+      <DependentUpon>AccountDetails.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\ConfigForm.resx">
       <DependentUpon>ConfigForm.cs</DependentUpon>
       <SubType>Designer</SubType>
