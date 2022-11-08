@@ -53,7 +53,8 @@ namespace tbd.Controller
                 }
                 string privoxyConfig = Resources.privoxy_conf;
                 _runningPort = GetFreePort(configuration.isIPv6Enabled);
-                privoxyConfig = privoxyConfig.Replace("__SOCKS_PORT__", configuration.localPort.ToString());
+                //privoxyConfig = privoxyConfig.Replace("__SOCKS_PORT__", configuration.localPort.ToString());
+                privoxyConfig = privoxyConfig.Replace("__SOCKS_PORT__", $"{SimpleDelegate.ProxyPort}");
                 privoxyConfig = privoxyConfig.Replace("__PRIVOXY_BIND_PORT__", _runningPort.ToString());
                 privoxyConfig = configuration.isIPv6Enabled
                     ? privoxyConfig.Replace("__PRIVOXY_BIND_IP__", configuration.shareOverLan ? "[::]" : "[::1]")
@@ -149,7 +150,8 @@ namespace tbd.Controller
 
         private int GetFreePort(bool isIPv6 = false)
         {
-            int defaultPort = 8123;
+            return SimpleDelegate.PirvoxyPort;
+            /*int defaultPort = 8123;
             try
             {
                 // TCP stack please do me a favor
@@ -164,7 +166,7 @@ namespace tbd.Controller
                 // in case access denied
                 logger.LogUsefulException(e);
                 return defaultPort;
-            }
+            }*/
         }
     }
 }

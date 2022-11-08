@@ -211,6 +211,7 @@ namespace tbd.Controller
 
         public const string ProxyIP = "127.0.0.1";
         public const short ProxyPort = 31080;
+        public const short PirvoxyPort = 31081;
         public struct Struct_INTERNET_PROXY_INFO
         {
             public int dwAccessType;
@@ -225,7 +226,8 @@ namespace tbd.Controller
             bool settingsReturn, refreshReturn;
             if (on){ 
                 registry.SetValue("ProxyEnable", 1);
-                registry.SetValue ("ProxyServer", $"SOCKS5={ProxyIP}:{ProxyPort}");
+                //registry.SetValue ("ProxyServer", $"SOCKS5={ProxyIP}:{ProxyPort}");
+                registry.SetValue("ProxyServer", $"http://localhost:{PirvoxyPort}");
                 registry.SetValue("ProxyOverride", exceptionStr);
                 if ((int)registry.GetValue("ProxyEnable", 0) == 0)
                 {

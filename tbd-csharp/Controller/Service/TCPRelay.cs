@@ -43,12 +43,12 @@ namespace tbd.Controller
 
         public override bool Handle(byte[] firstPacket, int length, Socket socket, object state)
         {
+
             if (socket.ProtocolType != ProtocolType.Tcp
                 || (length < 2 || firstPacket[0] != 5))
             {
                 return false;
             }
-
             socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
             TCPHandler handler = new TCPHandler(_controller, _config, socket);
 
