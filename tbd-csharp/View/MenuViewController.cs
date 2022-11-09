@@ -477,7 +477,8 @@ namespace tbd.View
         {
             if (e.Button == MouseButtons.Left)
             {
-                ShowConfigForm();
+                //ShowConfigForm();
+                showAccountForm();
             }
         }
 
@@ -602,8 +603,7 @@ namespace tbd.View
             }
             UpdateTrayIconAndNotifyTextForSimple(!curStatus);
         }
-        
-        private void ShowAccountDetails(object sender, EventArgs e)
+        private void showAccountForm()
         {
             if (accountDetalsForm != null)
             {
@@ -616,6 +616,10 @@ namespace tbd.View
                 accountDetalsForm.Activate();
                 accountDetalsForm.FormClosed += accountFormClose;
             }
+        }
+        private void ShowAccountDetails(object sender, EventArgs e)
+        {
+            showAccountForm();
         }
 
         void accountFormClose(object sender, FormClosedEventArgs e)

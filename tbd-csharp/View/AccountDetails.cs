@@ -24,7 +24,7 @@ namespace tbd.View
             }
             this.accountID.Text = cid;
             this.bAddress.Text = SimpleDelegate.wallet.Address;
-            float balance = SimpleDelegate.BalanceWin(0);
+            float balance = SimpleDelegate.BalanceWin(SimpleDelegate.stripe.expire_day);
             this.balanceLbl.Text = balance.ToString("0.00");
             this.accQRImg.Image = Utils.ToImage(cid);
         }

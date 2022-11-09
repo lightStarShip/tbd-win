@@ -105,6 +105,7 @@ namespace tbd.Controller
         public bool IsVip()
         {
             Int64 now = DateTimeOffset.Now.ToUnixTimeSeconds();
+            Console.WriteLine($"======>>> expire day:{expire_day}  now:{now}");
             return expire_day > now + 5;
         }
 
