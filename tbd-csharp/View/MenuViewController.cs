@@ -700,7 +700,7 @@ namespace tbd.View
 
             IntPtr errStr = SimpleDelegate.ChangeSrvWin(n.NodeAddr, n.Host);
             string err = Marshal.PtrToStringAnsi(errStr);
-            if (err.Length != 0)
+            if (err != null)
             {
                 Console.WriteLine($"======>>> change node failed: { err}");
                 return;
