@@ -239,6 +239,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\Node.cs" />
     <Compile Include="Controller\Stripe.cs" />
     <Compile Include="Controller\Wallet.cs" />
     <Compile Include="View\AccountDetails.cs">

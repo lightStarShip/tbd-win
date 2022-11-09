@@ -77,6 +77,7 @@ namespace tbd.Controller
 #endif
             wallet = Wallet.LoadWallet();
             stripe = Stripe.LoadStripe(wallet.Address);
+            Node.LoadNodeList();
         }
 
         public static bool HasWallet()
@@ -91,10 +92,22 @@ namespace tbd.Controller
         public static bool StartSimpleProtocol()
         {
             string lclProxy = $"{ProxyIP}:{ProxyPort}";
-            return StartProxyWin(lclProxy, "45.77.104.235", "SVEG15KMztpcmACzrr9fftZMta8Hcq3wv37nzayiggNNKk");
-        }
 
-        public static string ApiFunc(string msg)
+            string addr = stripe.currentNode;
+            if (addr == null)
+            {
+                return false;
+            }
+            Node node = Node.NodeCache[addr];
+            if (node == null)
+            {
+                return false;
+            }
+            return StartProxyWin(lclProxy, node.Host, node.NodeAddr);
+        }
+       
+
+       public static string ApiFunc(string msg)
         {
             ApiCmd cmd = ApiCmd.Parse(msg);
             switch (cmd.cmd)
@@ -148,6 +161,16 @@ namespace tbd.Controller
 
         [DllImport(DLLNAME, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         public static extern void StopProxy();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+        public static extern IntPtr NodeConfigData();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+        public static extern float PingValWin(string addr, string ip);
+        
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+        public static extern IntPtr ChangeSrvWin(string addr, string ip);
+        
         #endregion
 
         #region system proxy settings

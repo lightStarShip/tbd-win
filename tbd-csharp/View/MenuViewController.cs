@@ -1,10 +1,13 @@
 ﻿using NLog;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Threading;
@@ -32,9 +35,9 @@ namespace tbd.View
 
         private ContextMenu contextMenu1;
         private MenuItem SeperatorItem;
-        private MenuItem ConfigItem;
         private MenuItem ServersItem;
         private MenuItem startStopItem;
+        private MenuItem curNodeItem;
 
         private ConfigForm configForm;
         private WalletImport walletImportForm;
@@ -78,7 +81,8 @@ namespace tbd.View
             updateChecker = new UpdateChecker();
             updateChecker.CheckUpdateCompleted += updateChecker_CheckUpdateCompleted;
 
-            LoadCurrentConfiguration();
+            UpdateServersMenu();
+            Node.NodeChanged += menu_NodeChanged;
 
             Configuration config = controller.GetCurrentConfiguration();
 
@@ -96,6 +100,7 @@ namespace tbd.View
                 ShowImportWalletForm();
             }
         }
+
 
         #region Tray Icon
 
@@ -258,7 +263,10 @@ namespace tbd.View
         #endregion
 
         #region MenuItems and MenuGroups
-
+        private void menu_NodeChanged(object sender, EventArgs e)
+        {
+            UpdateServersMenu();
+        }
         private MenuItem CreateMenuItem(string text, EventHandler click)
         {
             return new MenuItem(I18N.GetString(text), click);
@@ -279,13 +287,11 @@ namespace tbd.View
             this.contextMenu1 = new ContextMenu(new MenuItem[] {
 
                 this.startStopItem = CreateMenuItem("Start", new EventHandler(this.Start_Stop)),
+               
                 this.ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
-                    this.SeperatorItem = new MenuItem("-"),
-                    this.ConfigItem = CreateMenuItem("Edit Servers...", new EventHandler(this.Config_Click)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Share Server Config...", new EventHandler(this.QRCodeItem_Click)),
-                    CreateMenuItem("Scan QRCode from Screen...", new EventHandler(this.ScanQRCodeItem_Click)),
-                    CreateMenuItem("Import URL from Clipboard...", new EventHandler(this.ImportURLItem_Click))
+                        this.SeperatorItem = new MenuItem("-"),
+                        CreateMenuItem("Ping Nodes", new EventHandler(this.Ping_clicked)),
+                        CreateMenuItem("Reload Nodes", new EventHandler(this.Reload_clicked)),
                 }),
                 CreateMenuItem("Account", new EventHandler(this.ShowAccountDetails)),
                 CreateMenuItem("Command Line", new EventHandler(this.CopyCmdLine)),
@@ -358,7 +364,6 @@ namespace tbd.View
         private void LoadCurrentConfiguration()
         {
             Configuration config = controller.GetCurrentConfiguration();
-            UpdateServersMenu();
         }
 
         #region Forms
@@ -634,6 +639,17 @@ namespace tbd.View
 
         #region Server
 
+        private void Ping_clicked(object sender, EventArgs e)
+        {
+            Thread t = new Thread(new ThreadStart(Node.MultiPing));
+            t.IsBackground = true;
+            t.Start();
+        }
+        private void Reload_clicked (object sender, EventArgs e)
+        {
+            Node.LoadNodeList(true);
+        }
+
         private void UpdateServersMenu()
         {
             var items = ServersItem.MenuItems;
@@ -641,43 +657,53 @@ namespace tbd.View
             {
                 items.RemoveAt(0);
             }
-            int strategyCount = 0;
-            foreach (var strategy in controller.GetStrategies())
-            {
-                MenuItem item = new MenuItem(strategy.Name);
-                item.Tag = strategy.ID;
-                item.Click += AStrategyItem_Click;
-                items.Add(strategyCount, item);
-                strategyCount++;
-            }
-
-            // user wants a seperator item between strategy and servers menugroup
-            items.Add(strategyCount++, new MenuItem("-"));
-
             int serverCount = 0;
-            Configuration configuration = controller.GetCurrentConfiguration();
-            foreach (var server in configuration.configs)
+            foreach (KeyValuePair<string, Node> nodeItem in Node.NodeCache)
             {
-                try
+                string addr = nodeItem.Key;
+                Node node = nodeItem.Value;
+                string itemLabel = string.Format("{0}{1}", node.LocalName, node.GetPingStr());
+                MenuItem item = new MenuItem(itemLabel);
+                item.Tag = node.NodeAddr;
+                item.Click += NodeChanged_Click;
+                items.Add(serverCount, item);
+                serverCount++;
+                string curNode = SimpleDelegate.stripe.currentNode;
+                if (curNode == node.NodeAddr)
                 {
-                    Configuration.CheckServer(server);
-                    MenuItem item = new MenuItem(server.ToString());
-                    item.Tag = configuration.configs.FindIndex(s => s == server);
-                    item.Click += AServerItem_Click;
-                    items.Add(strategyCount + serverCount, item);
-                    serverCount++;
-                }
-                catch
-                {
-                }
-            }
-
-            foreach (MenuItem item in items)
-            {
-                if (item.Tag != null && (item.Tag.ToString() == configuration.index.ToString() || item.Tag.ToString() == configuration.strategy))
-                {
+                    this.curNodeItem = item;
                     item.Checked = true;
                 }
+            }
+            // user wants a seperator item between strategy and servers menugroup
+            items.Add(serverCount++, new MenuItem("-"));
+        }
+
+        private void NodeChanged_Click(object sender, EventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            string addr = (string)item.Tag;
+            SimpleDelegate.stripe.SetCurrentNode(addr);
+            item.Checked = true;
+            if (this.curNodeItem != null)
+            {
+                this.curNodeItem.Checked = false;
+            }
+            this.curNodeItem = item;
+
+            Node n = Node.NodeCache[addr];
+            if (n == null)
+            {
+                Console.WriteLine($"======>>> invalid node addr: {addr}");
+                return;
+            }
+
+            IntPtr errStr = SimpleDelegate.ChangeSrvWin(n.NodeAddr, n.Host);
+            string err = Marshal.PtrToStringAnsi(errStr);
+            if (err.Length != 0)
+            {
+                Console.WriteLine($"======>>> change node failed: { err}");
+                return;
             }
         }
 

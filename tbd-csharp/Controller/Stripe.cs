@@ -7,7 +7,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace tbd.Controller
 {
@@ -17,6 +16,7 @@ namespace tbd.Controller
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private static readonly string Stripe_FILE = "_stripe.json";
         public string cus_id;
+        public string currentNode;
         public Int64 expire_day;
         public Int64 update_time;
 
@@ -61,8 +61,10 @@ namespace tbd.Controller
             string content = Marshal.PtrToStringAnsi(sPtr);
             Stripe stripe = JsonConvert.DeserializeObject<Stripe>(content, new JsonSerializerSettings()
             {
-                ObjectCreationHandling = ObjectCreationHandling.Replace
+                ObjectCreationHandling = ObjectCreationHandling.Replace,
+                NullValueHandling = NullValueHandling.Ignore
             });
+            stripe.currentNode = this.currentNode;
             stripe.SaveToDisk(this.walletAddr);
             Console.WriteLine($"======>>>reload stripe basic: [{stripe.cus_id}]");
         }
@@ -84,7 +86,8 @@ namespace tbd.Controller
 
             Stripe stripe = JsonConvert.DeserializeObject<Stripe>(content, new JsonSerializerSettings()
             {
-                ObjectCreationHandling = ObjectCreationHandling.Replace
+                ObjectCreationHandling = ObjectCreationHandling.Replace,
+                NullValueHandling = NullValueHandling.Ignore
             });
             stripe.walletAddr = wAddr;
 
@@ -97,6 +100,18 @@ namespace tbd.Controller
                 t.Start();
             }
             return stripe;
+        }
+
+        public bool IsVip()
+        {
+            Int64 now = DateTimeOffset.Now.ToUnixTimeSeconds();
+            return expire_day > now + 5;
+        }
+
+        public void SetCurrentNode(string addr)
+        {
+            this.currentNode = addr;
+            SaveToDisk(this.walletAddr);
         }
     }
 }
