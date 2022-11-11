@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using tbd.Controller;
 using tbd.Util;
@@ -65,9 +67,11 @@ namespace tbd.View
                 MessageBox.Show(I18N.GetString("Load Wallet Failed"), I18N.GetString("Tips"));
                 return;
             }
-            SimpleDelegate.wallet.RawData = wData;
-            SimpleDelegate.wallet.Pwd = passwrod;
-            SimpleDelegate.wallet.SaveToDisk();
+            Wallet.CreateWallet(wData, passwrod);
+            Thread t = new Thread(new ThreadStart(SimpleDelegate.ReloadWallet));
+            t.IsBackground = true;
+            t.Start();
+           
             MessageBox.Show(I18N.GetString("Load Wallet Success"), I18N.GetString("Tips"));
             this.Close();
         }

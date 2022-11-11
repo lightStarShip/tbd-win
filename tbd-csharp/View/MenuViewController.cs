@@ -61,7 +61,6 @@ namespace tbd.View
 
             LoadMenu();
 
-            controller.ConfigChanged += controller_ConfigChanged;
             controller.PACFileReadyToOpen += controller_FileReadyToOpen;
             controller.UserRuleFileReadyToOpen += controller_FileReadyToOpen;
             controller.Errored += controller_Errored;
@@ -69,7 +68,7 @@ namespace tbd.View
             controller.UpdatePACFromGeositeError += controller_UpdatePACFromGeositeError;
 
             _notifyIcon = new NotifyIcon();
-            UpdateTrayIconAndNotifyTextForSimple(false);
+            UpdateTrayIconAndNotifyTextForSimple();
             _notifyIcon.Visible = true;
             _notifyIcon.ContextMenu = contextMenu1;
             _notifyIcon.BalloonTipClicked += notifyIcon1_BalloonTipClicked;
@@ -86,27 +85,17 @@ namespace tbd.View
 
             Configuration config = controller.GetCurrentConfiguration();
 
-            if (config.firstRun)
-            {
-                ShowConfigForm();
-            }
-            else if (config.autoCheckUpdate)
-            {
-                _isStartupCheck = true;
-                Dispatcher.CurrentDispatcher.Invoke(() => updateChecker.CheckForVersionUpdate(3000));
-            }
             if (!SimpleDelegate.HasWallet())
             {
                 ShowImportWalletForm();
             }
         }
 
-
         #region Tray Icon
 
-
-        private void UpdateTrayIconAndNotifyTextForSimple(bool isOn)
+        private void UpdateTrayIconAndNotifyTextForSimple()
         {
+            bool isOn = SimpleDelegate.IsProxySet();
             this.startStopItem.Text = isOn ? I18N.GetString("Stop") : I18N.GetString("Start");
 
             Color colorMask = SetStatusColorMask(isOn);
@@ -128,7 +117,7 @@ namespace tbd.View
             ViewUtils.SetNotifyIconText(_notifyIcon, text);
         }
 
-        private void UpdateTrayIconAndNotifyText()
+        /*private void UpdateTrayIconAndNotifyText()
         {
             Configuration config = controller.GetCurrentConfiguration();
             bool enabled = config.enabled;
@@ -162,7 +151,7 @@ namespace tbd.View
                 text = text.Substring(0, 126 - 3) + "...";
             }
             ViewUtils.SetNotifyIconText(_notifyIcon, text);
-        }
+        }*/
 
         /// <summary>
         /// Determine the icon size based on the screen DPI.
@@ -353,12 +342,6 @@ namespace tbd.View
         void controller_Errored(object sender, ErrorEventArgs e)
         {
             MessageBox.Show(e.GetException().ToString(), I18N.GetString("TheBigDipper Error: {0}", e.GetException().Message));
-        }
-
-        private void controller_ConfigChanged(object sender, EventArgs e)
-        {
-            LoadCurrentConfiguration();
-            UpdateTrayIconAndNotifyText();
         }
 
         private void LoadCurrentConfiguration()
@@ -581,6 +564,12 @@ namespace tbd.View
 
         private void Start_Stop(object sender, EventArgs e)
         {
+            string curNode = SimpleDelegate.stripe.currentNode;
+            if (curNode == null)
+            {
+                MessageBox.Show(I18N.GetString("Load Server First"), I18N.GetString("Error"));
+                return;
+            }
             bool curStatus = SimpleDelegate.IsProxySet();
             
             bool success = SimpleDelegate.SetSysProxy(!curStatus);
@@ -601,7 +590,7 @@ namespace tbd.View
                     return;
                 }
             }
-            UpdateTrayIconAndNotifyTextForSimple(!curStatus);
+            UpdateTrayIconAndNotifyTextForSimple();
         }
         private void showAccountForm()
         {
@@ -634,6 +623,8 @@ namespace tbd.View
 
         private void Quit_Click(object sender, EventArgs e)
         {
+            SimpleDelegate.StopProxy();
+            SimpleDelegate.SetSysProxy(false);
             controller.Stop();
             _notifyIcon.Visible = false;
             Application.Exit();

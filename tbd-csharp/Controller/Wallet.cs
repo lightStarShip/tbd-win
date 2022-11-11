@@ -8,21 +8,24 @@ namespace tbd.Controller
     public class Wallet
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        public static readonly string Wallet_FILE = "wallet.json";
+        public static readonly string WALLET_FILE = "wallet.json";
         [JsonIgnore]
         public string Address;
         public string RawData;
         public string Pwd;
 
-        public void SaveToDisk()
+        public static void CreateWallet(string raw, string pwd)
         {
+            Wallet wallet = new Wallet();
+            wallet.RawData = raw;
+            wallet.Pwd = pwd;
             FileStream wFileStream = null;
             StreamWriter wStreamWriter = null;
             try
             {
-                wFileStream = File.Open(Wallet_FILE, FileMode.Create);
+                wFileStream = File.Open(WALLET_FILE, FileMode.Create);
                 wStreamWriter = new StreamWriter(wFileStream);
-                var jsonString = JsonConvert.SerializeObject(this, Formatting.Indented);
+                var jsonString = JsonConvert.SerializeObject(wallet, Formatting.Indented);
                 wStreamWriter.Write(jsonString);
                 wStreamWriter.Flush();
             }
@@ -41,13 +44,13 @@ namespace tbd.Controller
 
         public static Wallet LoadWallet()
         {
-            if (false == File.Exists(Wallet.Wallet_FILE))
+            if (false == File.Exists(Wallet.WALLET_FILE))
             {
                 return new Wallet();
             }
 
             Wallet wallet = new Wallet();
-            string content = File.ReadAllText(Wallet.Wallet_FILE);
+            string content = File.ReadAllText(Wallet.WALLET_FILE);
             wallet = JsonConvert.DeserializeObject<Wallet>(content, new JsonSerializerSettings()
             {
                 ObjectCreationHandling = ObjectCreationHandling.Replace

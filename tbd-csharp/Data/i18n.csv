@@ -17,6 +17,11 @@ Stop,,关闭,,,,
 Command Line,,命令行指令,,,,
 Ping Nodes,,检测节点,,,,
 Reload Nodes,,加载节点,,,,
+Please run as admin,,请以管理员身份运行,,,,
+Set System Proxy failed,,设置代理失败,,,,
+Load Server First,,请先加载服务节点,,,,
+Error,,错误,,,,
+Tips,,提示,,,,
 Account,,账号信息,,,,
 PAC,Сценарий настройки (PAC),PAC 模式,PAC 模式,PACモード,프록시 자동 구성 (PAC),PAC
 Global,Для всей системы,全局模式,全局模式,グローバルプロキシ,전역,Global

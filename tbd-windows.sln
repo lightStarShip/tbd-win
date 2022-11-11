@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tbdTest", "test\tbdTest.csp
 		{8C02D2F7-7CDB-4D55-9F25-CD03EF4AA062} = {8C02D2F7-7CDB-4D55-9F25-CD03EF4AA062}
 	EndProjectSection
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TBDSetup", "TBDSetup\TBDSetup.vdproj", "{60DE2DE6-E5E8-4F56-A2DC-003E227EF817}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,12 @@ Global
 		{45913187-0685-4903-B250-DCEF0479CD86}.Release|x64.ActiveCfg = Release|x64
 		{45913187-0685-4903-B250-DCEF0479CD86}.Release|x86.ActiveCfg = Release|x86
 		{45913187-0685-4903-B250-DCEF0479CD86}.Release|x86.Build.0 = Release|x86
+		{60DE2DE6-E5E8-4F56-A2DC-003E227EF817}.Debug|Any CPU.ActiveCfg = Debug
+		{60DE2DE6-E5E8-4F56-A2DC-003E227EF817}.Debug|x64.ActiveCfg = Debug
+		{60DE2DE6-E5E8-4F56-A2DC-003E227EF817}.Debug|x86.ActiveCfg = Debug
+		{60DE2DE6-E5E8-4F56-A2DC-003E227EF817}.Release|Any CPU.ActiveCfg = Release
+		{60DE2DE6-E5E8-4F56-A2DC-003E227EF817}.Release|x64.ActiveCfg = Release
+		{60DE2DE6-E5E8-4F56-A2DC-003E227EF817}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

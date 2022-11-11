@@ -76,8 +76,21 @@ namespace tbd.Controller
         InitLibWin(0, 1, "https://lightstarship.github.io", ref simpleCallbackAPI, ref simpleLogCB);
 #endif
             wallet = Wallet.LoadWallet();
-            stripe = Stripe.LoadStripe(wallet.Address);
-            Node.LoadNodeList();
+            if (wallet.Address != null)
+            {
+                stripe = Stripe.LoadStripe(wallet.Address);
+                Node.LoadNodeList();
+            }
+        }
+
+        public static void ReloadWallet()
+        {
+            wallet = Wallet.LoadWallet();
+            if (wallet.Address != null)
+            {
+                stripe = Stripe.LoadStripe(wallet.Address);
+                Node.LoadNodeList(true);
+            }
         }
 
         public static bool HasWallet()

@@ -38,6 +38,15 @@ namespace tbd
         [STAThread]
         private static void Main(string[] args)
         {
+/*#if DEBUG
+
+#else
+            if (Utils.IsAdmin() == false)
+            {
+                MessageBox.Show(I18N.GetString("Please run as admin"), I18N.GetString("Tips"));
+                    return;
+            }
+#endif*/
             #region Single Instance and IPC
             bool hasAnotherInstance = !mutex.WaitOne(TimeSpan.Zero, true);
 

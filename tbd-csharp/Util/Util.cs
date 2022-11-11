@@ -12,6 +12,7 @@ using System.Drawing;
 using ZXing;
 using ZXing.QrCode;
 using ZXing.Common;
+using System.Security.Principal;
 
 namespace tbd.Util
 {
@@ -34,13 +35,13 @@ namespace tbd.Util
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private static string _tempPath = null;
-
+        private static string _appDataPath = null;
         // return path to store temporary files
         public static string GetTempPath()
         {
             if (_tempPath == null)
             {
-                bool isPortableMode = Configuration.Load().portableMode;
+                bool isPortableMode = false;// Configuration.Load().portableMode;
                 try
                 {
                     if (isPortableMode)
@@ -50,6 +51,7 @@ namespace tbd.Util
                     }
                     else
                     {
+                        string _appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                         _tempPath = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), @"tbd\ss_win_temp_" + Program.ExecutablePath.GetHashCode())).FullName;
                     }
                 }
@@ -59,7 +61,27 @@ namespace tbd.Util
                     throw;
                 }
             }
+            Console.WriteLine($"======>>> tempPath is [${_tempPath}]");
             return _tempPath;
+        }
+
+        public static string GetAppDataPath()
+        {
+            if (_appDataPath == null)
+            {
+                try
+                {
+                    string _appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    _appDataPath = Directory.CreateDirectory(Path.Combine(_appData, @"TheBigDipper")).FullName;
+                }
+                catch (Exception e)
+                {
+                    logger.Error(e);
+                    throw;
+                }
+            }
+            Console.WriteLine($"======>>> _appDataPath is [${_appDataPath}]");
+            return _appDataPath;
         }
 
         public enum WindowsThemeMode { Dark, Light }
@@ -316,6 +338,14 @@ namespace tbd.Util
                 }
             }
             return false;
+        }
+
+        public static bool IsAdmin()
+        {
+            bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent())
+                      .IsInRole(WindowsBuiltInRole.Administrator) ? true : false;
+
+            return isAdmin;
         }
     }
 }
