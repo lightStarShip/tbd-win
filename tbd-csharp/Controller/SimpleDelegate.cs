@@ -45,7 +45,7 @@ namespace tbd.Controller
             "172.29.*;172.30.*;172.31.*;192.168.*";
         static SimpleDelegate()
         {
-            string dllPath = Utils.GetTempPath(DLLNAME);
+            string dllPath = Utils.GetAppDataPath(DLLNAME);
             try
             {
                 FileManager.UncompressFile(dllPath, Resources.libsimple_dll);
