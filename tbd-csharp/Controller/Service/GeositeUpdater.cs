@@ -166,15 +166,15 @@ namespace tbd.Controller
         public static bool MergeAndWritePACFile(List<string> directGroups, List<string> proxiedGroups, bool blacklist)
         {
             string abpContent = MergePACFile(directGroups, proxiedGroups, blacklist);
-            if (File.Exists(PACDaemon.PAC_FILE))
+            if (File.Exists(PACDaemon.PacFilePath()))
             {
-                string original = FileManager.NonExclusiveReadAllText(PACDaemon.PAC_FILE, Encoding.UTF8);
+                string original = FileManager.NonExclusiveReadAllText(PACDaemon.PacFilePath(), Encoding.UTF8);
                 if (original == abpContent)
                 {
                     return false;
                 }
             }
-            File.WriteAllText(PACDaemon.PAC_FILE, abpContent, Encoding.UTF8);
+            File.WriteAllText(PACDaemon.PacFilePath(), abpContent, Encoding.UTF8);
             return true;
         }
 
@@ -218,9 +218,9 @@ namespace tbd.Controller
         private static string MergePACFile(List<string> directGroups, List<string> proxiedGroups, bool blacklist)
         {
             string abpContent;
-            if (File.Exists(PACDaemon.USER_ABP_FILE))
+            if (File.Exists(PACDaemon.UserABPPath()))
             {
-                abpContent = FileManager.NonExclusiveReadAllText(PACDaemon.USER_ABP_FILE, Encoding.UTF8);
+                abpContent = FileManager.NonExclusiveReadAllText(PACDaemon.UserABPPath(), Encoding.UTF8);
             }
             else
             {
@@ -228,9 +228,9 @@ namespace tbd.Controller
             }
 
             List<string> userruleLines = new List<string>();
-            if (File.Exists(PACDaemon.USER_RULE_FILE))
+            if (File.Exists(PACDaemon.UserRulePath()))
             {
-                string userrulesString = FileManager.NonExclusiveReadAllText(PACDaemon.USER_RULE_FILE, Encoding.UTF8);
+                string userrulesString = FileManager.NonExclusiveReadAllText(PACDaemon.UserRulePath(), Encoding.UTF8);
                 userruleLines = ProcessUserRules(userrulesString);
             }
 

@@ -119,7 +119,7 @@ namespace tbd.Controller
                 if (_config.regeneratePacOnUpdate)
                     try
                     {
-                        File.Delete(PACDaemon.PAC_FILE);
+                        File.Delete(PACDaemon.PacFilePath());
                         logger.Info("Deleted pac.txt from previous version.");
                     }
                     catch (Exception e)

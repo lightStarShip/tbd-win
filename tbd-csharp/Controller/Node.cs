@@ -8,13 +8,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using tbd.Util;
 
 namespace tbd.Controller
 {
     public class Node
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        public static readonly string NODE_FILE = "nodes.json";
+        public static readonly string S_NODE_FILE = "nodes.json";
         public static event EventHandler NodeChanged;
 
         public static Dictionary<string, Node> NodeCache = new Dictionary<string, Node>();
@@ -34,25 +35,31 @@ namespace tbd.Controller
         [JsonIgnore]
         public float PingVal = 0.0f;
 
-        public static void LoadNodeList(bool fromSrv = false)
+        static string NodeFilePath()
+        {
+            return Utils.GetAppDataPath(S_NODE_FILE);
+        }
+
+        public static bool LoadNodeList(bool fromSrv = false)
         {
             string content = "";
             bool need_save = false;
-            if (false == File.Exists(NODE_FILE) || fromSrv == true)
+            if (false == File.Exists(NodeFilePath()) || fromSrv == true)
             {
                 IntPtr nPtr = SimpleDelegate.NodeConfigData();
                 content = Marshal.PtrToStringAnsi(nPtr);
                 if (content == null)
                 {
                     Console.WriteLine("======>>> failed to load node config");
-                    return;
+                    return false;
                 }
                 need_save = true;
             }
             else
             {
-                content = File.ReadAllText(NODE_FILE);
+                content = File.ReadAllText(NodeFilePath());
             }
+
             List<Node> nodeList = JsonConvert.DeserializeObject<List<Node>>(content);
             if (need_save)
             {
@@ -70,6 +77,7 @@ namespace tbd.Controller
             {
                 NodeChanged?.Invoke(null, new EventArgs());
             }
+            return true;
         }
         private static void FillCache(List<Node> nodeList)
         {
@@ -101,7 +109,7 @@ namespace tbd.Controller
             StreamWriter wStreamWriter = null;
             try
             { 
-                wFileStream = File.Open(NODE_FILE, FileMode.Create);
+                wFileStream = File.Open(NodeFilePath(), FileMode.Create);
                 wStreamWriter = new StreamWriter(wFileStream);
                 wStreamWriter.Write(content);
                 wStreamWriter.Flush();

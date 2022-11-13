@@ -3,17 +3,23 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using NLog;
+using tbd.Util;
+
 namespace tbd.Controller
 {
     public class Wallet
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        public static readonly string WALLET_FILE = "wallet.json";
+        public static readonly string S_WALLET_FILE = "wallet.json";
         [JsonIgnore]
         public string Address;
         public string RawData;
         public string Pwd;
 
+        static string WalletFilePath()
+        {
+            return Utils.GetAppDataPath(S_WALLET_FILE);
+        }
         public static void CreateWallet(string raw, string pwd)
         {
             Wallet wallet = new Wallet();
@@ -23,7 +29,7 @@ namespace tbd.Controller
             StreamWriter wStreamWriter = null;
             try
             {
-                wFileStream = File.Open(WALLET_FILE, FileMode.Create);
+                wFileStream = File.Open(WalletFilePath(), FileMode.Create);
                 wStreamWriter = new StreamWriter(wFileStream);
                 var jsonString = JsonConvert.SerializeObject(wallet, Formatting.Indented);
                 wStreamWriter.Write(jsonString);
@@ -44,13 +50,13 @@ namespace tbd.Controller
 
         public static Wallet LoadWallet()
         {
-            if (false == File.Exists(Wallet.WALLET_FILE))
+            if (false == File.Exists(Wallet.WalletFilePath()))
             {
                 return new Wallet();
             }
 
             Wallet wallet = new Wallet();
-            string content = File.ReadAllText(Wallet.WALLET_FILE);
+            string content = File.ReadAllText(Wallet.WalletFilePath());
             wallet = JsonConvert.DeserializeObject<Wallet>(content, new JsonSerializerSettings()
             {
                 ObjectCreationHandling = ObjectCreationHandling.Replace

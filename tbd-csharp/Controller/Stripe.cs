@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using tbd.Util;
 
 namespace tbd.Controller
 {
@@ -22,9 +23,10 @@ namespace tbd.Controller
 
         [JsonIgnore]
         string walletAddr;
-        public static string GetStripeFileName(string wAddr)
+        public static string GetStripeFilePath(string wAddr)
         {
-            return string.Format("{0}{1}", wAddr, Stripe_FILE);
+            string file_name = string.Format("{0}{1}", wAddr, Stripe_FILE);
+            return Utils.GetAppDataPath(file_name);
         }
         public void SaveToDisk(string wAddr)
         {
@@ -32,7 +34,7 @@ namespace tbd.Controller
             StreamWriter wStreamWriter = null;
             try
             {
-                string file_name = GetStripeFileName(wAddr);
+                string file_name = GetStripeFilePath(wAddr);
                 wFileStream = File.Open(file_name, FileMode.Create);
                 wStreamWriter = new StreamWriter(wFileStream);
                 var jsonString = JsonConvert.SerializeObject(this, Formatting.Indented);
@@ -70,7 +72,7 @@ namespace tbd.Controller
         }
         public static Stripe LoadStripe(string wAddr)
         {
-            string file_name = GetStripeFileName(wAddr);
+            string file_name = GetStripeFilePath(wAddr);
             string content = "";
             bool need_save = false;
             if (false == File.Exists(file_name))

@@ -41,19 +41,17 @@ namespace tbd.Util
         {
             if (_tempPath == null)
             {
-                bool isPortableMode = false;// Configuration.Load().portableMode;
                 try
                 {
-                    if (isPortableMode)
+                    /* if (Configuration.Load().portableMode)
                     {
                         _tempPath = Directory.CreateDirectory("ss_win_temp").FullName;
                         // don't use "/", it will fail when we call explorer /select xxx/ss_win_temp\xxx.log
                     }
                     else
-                    {
-                        string _appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                        _tempPath = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), @"tbd\ss_win_temp_" + Program.ExecutablePath.GetHashCode())).FullName;
-                    }
+                    {*/
+                    _tempPath = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), @"tbd\ss_win_temp_" + Program.ExecutablePath.GetHashCode())).FullName;
+                    //}
                 }
                 catch (Exception e)
                 {
@@ -80,7 +78,7 @@ namespace tbd.Util
                     throw;
                 }
             }
-            Console.WriteLine($"======>>> _appDataPath is [${_appDataPath}]");
+           Console.WriteLine($"======>>> _appDataPath is [${_appDataPath}]");
             return _appDataPath;
         }
 
@@ -121,6 +119,12 @@ namespace tbd.Util
             return Path.Combine(GetTempPath(), filename);
         }
 
+
+        // return a full path with filename combined which pointed to the temporary directory
+        public static string GetAppDataPath(string filename)
+        {
+            return Path.Combine(GetAppDataPath(), filename);
+        }
         public static string UnGzip(byte[] buf)
         {
             byte[] buffer = new byte[1024];

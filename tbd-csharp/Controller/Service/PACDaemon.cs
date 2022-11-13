@@ -19,9 +19,9 @@ namespace tbd.Controller
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public const string PAC_FILE = "pac.txt";
-        public const string USER_RULE_FILE = "user-rule.txt";
-        public const string USER_ABP_FILE = "abp.txt";
+        public static string S_PAC_FILE = null;
+        public static string S_USER_RULE_FILE = null;
+        public static string S_USER_ABP_FILE = null;
         private Configuration config;
 
         FileSystemWatcher PACFileWatcher;
@@ -43,29 +43,29 @@ namespace tbd.Controller
 
         public string TouchPACFile()
         {
-            if (!File.Exists(PAC_FILE))
+            if (!File.Exists(PacFilePath()))
             {
                 GeositeUpdater.MergeAndWritePACFile(config.geositeDirectGroups, config.geositeProxiedGroups, config.geositePreferDirect);
             }
-            return PAC_FILE;
+            return PacFilePath();
         }
 
         internal string TouchUserRuleFile()
         {
-            if (!File.Exists(USER_RULE_FILE))
+            if (!File.Exists(UserRulePath()))
             {
-                File.WriteAllText(USER_RULE_FILE, Resources.user_rule);
+                File.WriteAllText(UserRulePath(), Resources.user_rule);
             }
-            return USER_RULE_FILE;
+            return UserRulePath();
         }
 
         internal string GetPACContent()
         {
-            if (!File.Exists(PAC_FILE))
+            if (!File.Exists(PacFilePath()))
             {
                 GeositeUpdater.MergeAndWritePACFile(config.geositeDirectGroups, config.geositeProxiedGroups, config.geositePreferDirect);
             }
-            return File.ReadAllText(PAC_FILE, Encoding.UTF8);
+            return File.ReadAllText(PacFilePath(), Encoding.UTF8);
         }
 
 
@@ -74,7 +74,7 @@ namespace tbd.Controller
             PACFileWatcher?.Dispose();
             PACFileWatcher = new FileSystemWatcher(Program.WorkingDirectory);
             PACFileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            PACFileWatcher.Filter = PAC_FILE;
+            PACFileWatcher.Filter = PacFilePath();
             PACFileWatcher.Changed += PACFileWatcher_Changed;
             PACFileWatcher.Created += PACFileWatcher_Changed;
             PACFileWatcher.Deleted += PACFileWatcher_Changed;
@@ -87,7 +87,7 @@ namespace tbd.Controller
             UserRuleFileWatcher?.Dispose();
             UserRuleFileWatcher = new FileSystemWatcher(Program.WorkingDirectory);
             UserRuleFileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            UserRuleFileWatcher.Filter = USER_RULE_FILE;
+            UserRuleFileWatcher.Filter = UserRulePath();
             UserRuleFileWatcher.Changed += UserRuleFileWatcher_Changed;
             UserRuleFileWatcher.Created += UserRuleFileWatcher_Changed;
             UserRuleFileWatcher.Deleted += UserRuleFileWatcher_Changed;
@@ -95,6 +95,32 @@ namespace tbd.Controller
             UserRuleFileWatcher.EnableRaisingEvents = true;
         }
 
+        public static string PacFilePath()
+        {
+            if (S_PAC_FILE == null)
+            {
+                S_PAC_FILE = Utils.GetAppDataPath("pac.txt");
+            }
+            return S_PAC_FILE;
+        }
+        public static string UserRulePath()
+        {
+            if (S_USER_RULE_FILE == null)
+            {
+                S_USER_RULE_FILE = Utils.GetAppDataPath("user-rule.txt");
+            }
+            return S_USER_RULE_FILE;
+        }
+        public static string UserABPPath()
+        {
+            if (S_USER_ABP_FILE == null)
+            {
+                S_USER_ABP_FILE = Utils.GetAppDataPath("abp.txt");
+            }
+            return S_USER_ABP_FILE;
+        }
+        
+        
         #region FileSystemWatcher.OnChanged()
         // FileSystemWatcher Changed event is raised twice
         // http://stackoverflow.com/questions/1764809/filesystemwatcher-changed-event-is-raised-twice

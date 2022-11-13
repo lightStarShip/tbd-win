@@ -76,6 +76,12 @@ namespace tbd.View
             _notifyIcon.MouseDoubleClick += notifyIcon1_DoubleClick;
             _notifyIcon.BalloonTipClosed += _notifyIcon_BalloonTipClosed;
             controller.TrafficChanged += controller_TrafficChanged;
+            ShowBalloonTip(
+                    I18N.GetString("TheBigDipper is here"),
+                    I18N.GetString("You can turn on/off TheBigDipper in the context menu"),
+                    ToolTipIcon.Info,
+                    0
+                );
 
             updateChecker = new UpdateChecker();
             updateChecker.CheckUpdateCompleted += updateChecker_CheckUpdateCompleted;
@@ -114,7 +120,7 @@ namespace tbd.View
             {
                 text = text.Substring(0, 126 - 3) + "...";
             }
-            ViewUtils.SetNotifyIconText(_notifyIcon, text);
+            ViewUtils.SetNotifyIconText(_notifyIcon, text); 
         }
 
         /*private void UpdateTrayIconAndNotifyText()
@@ -642,7 +648,9 @@ namespace tbd.View
         }
         private void Reload_clicked (object sender, EventArgs e)
         {
-            Node.LoadNodeList(true);
+            if (false == Node.LoadNodeList(true)){
+                MessageBox.Show(I18N.GetString("Load Node Failed"), "Tips");
+            }
         }
 
         private void UpdateServersMenu()

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using tbd.Util;
 
 namespace tbd.Model
 {
@@ -21,7 +22,7 @@ namespace tbd.Model
             Trace,
         }
 
-        const string NLOG_CONFIG_FILE_NAME = "NLog.config";
+        static string S_NLOG_CONFIG_FILE_NAME = null;
         const string TARGET_MIN_LEVEL_ATTRIBUTE = "minlevel";
         const string LOGGER_FILE_NAME_ATTRIBUTE = "fileName";
 
@@ -35,7 +36,7 @@ namespace tbd.Model
         public static NLogConfig LoadXML()
         {
             NLogConfig config = new NLogConfig();
-            config.doc.Load(NLOG_CONFIG_FILE_NAME);
+            config.doc.Load(ConfFilePath());
             config.logLevelElement = (XmlElement)SelectSingleNode(config.doc, "//nlog:logger[@name='*']");
             config.logFileNameElement = (XmlElement)SelectSingleNode(config.doc, "//nlog:target[@name='file']");
             return config;
@@ -46,7 +47,7 @@ namespace tbd.Model
         /// </summary>
         public static void SaveXML(NLogConfig nLogConfig)
         {
-            nLogConfig.doc.Save(NLOG_CONFIG_FILE_NAME);
+            nLogConfig.doc.Save(ConfFilePath());
         }
 
 
@@ -110,14 +111,14 @@ namespace tbd.Model
         {
             try
             {
-                if (File.Exists(NLOG_CONFIG_FILE_NAME))
+                if (File.Exists(ConfFilePath()))
                     return; // NLog.config exists, and has already been loaded
 
-                File.WriteAllText(NLOG_CONFIG_FILE_NAME, Properties.Resources.NLog_config);
+                File.WriteAllText(ConfFilePath(), Properties.Resources.NLog_config);
             }
             catch (Exception ex)
             {
-                NLog.Common.InternalLogger.Error(ex, "[shadowsocks] Failed to setup default NLog.config: {0}", NLOG_CONFIG_FILE_NAME);
+                NLog.Common.InternalLogger.Error(ex, "[The Big Dipper] Failed to setup default NLog.config: {0}", ConfFilePath());
                 return;
             }
 
@@ -129,7 +130,15 @@ namespace tbd.Model
         /// </summary>
         public static void LoadConfiguration()
         {
-            LogManager.LoadConfiguration(NLOG_CONFIG_FILE_NAME);
+            LogManager.LoadConfiguration(ConfFilePath());
+        }
+        private static string ConfFilePath()
+        {
+            if (S_NLOG_CONFIG_FILE_NAME == null)
+            {
+                S_NLOG_CONFIG_FILE_NAME = Utils.GetAppDataPath("NLog.config");
+            }
+            return S_NLOG_CONFIG_FILE_NAME; 
         }
     }
 }
