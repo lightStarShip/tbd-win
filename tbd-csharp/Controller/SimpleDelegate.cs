@@ -49,11 +49,17 @@ namespace tbd.Controller
             try
             {
                 FileManager.UncompressFile(dllPath, Resources.libsimple_dll);
-
+                if (!DllUtils.SetDllDirectory(Utils.GetAppDataPath()))
+                {
+                    throw new System.ComponentModel.Win32Exception();
+                }
                 IntPtr dllHandle = DllUtils.LoadLibrary(dllPath);
                 if (dllHandle == IntPtr.Zero)
                 {
+                    byte[] err = System.Text.Encoding.UTF8.GetBytes($"---------------------->{ Marshal.GetLastWin32Error()}");
+                    FileManager.ByteArrayToFile(dllPath+".txt", err);
                     Console.WriteLine($"---------------------->{ Marshal.GetLastWin32Error()}");
+                    logger.LogUsefulException(new Exception($"---------------------->{ Marshal.GetLastWin32Error()}"));
                 }
             }
             catch (IOException e)

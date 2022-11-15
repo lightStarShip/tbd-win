@@ -14,4 +14,7 @@ public class DllUtils
 
     [DllImport("kernel32", SetLastError = true)]
     public static extern IntPtr GetModuleHandle(String moduleName);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern bool SetDllDirectory(string path);
 }
