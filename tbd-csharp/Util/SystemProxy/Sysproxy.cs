@@ -68,7 +68,7 @@ namespace tbd.Util.SystemProxy
         {
             try
             {
-                FileManager.UncompressFile(Utils.GetTempPath("sysproxy.exe"),
+                FileManager.UncompressFile(Utils.GetAppDataPath("sysproxy.exe"),
                     Environment.Is64BitOperatingSystem ? Resources.sysproxy64_exe : Resources.sysproxy_exe);
             }
             catch (IOException e)
@@ -148,7 +148,7 @@ namespace tbd.Util.SystemProxy
                 using (var process = new Process())
                 {
                     // Configure the process using the StartInfo properties.
-                    process.StartInfo.FileName = Utils.GetTempPath("sysproxy.exe");
+                    process.StartInfo.FileName = Utils.GetAppDataPath("sysproxy.exe");
                     process.StartInfo.Arguments = arguments;
                     process.StartInfo.WorkingDirectory = Utils.GetTempPath();
                     process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -227,7 +227,7 @@ namespace tbd.Util.SystemProxy
         {
             try
             {
-                using (StreamWriter sw = new StreamWriter(File.Open(Utils.GetTempPath(_userWininetConfigFile), FileMode.Create)))
+                using (StreamWriter sw = new StreamWriter(File.Open(Utils.GetAppDataPath(_userWininetConfigFile), FileMode.Create)))
                 {
                     string jsonString = JsonConvert.SerializeObject(_userSettings, Formatting.Indented);
                     sw.Write(jsonString);
@@ -244,7 +244,7 @@ namespace tbd.Util.SystemProxy
         {
             try
             {
-                string configContent = File.ReadAllText(Utils.GetTempPath(_userWininetConfigFile));
+                string configContent = File.ReadAllText(Utils.GetAppDataPath(_userWininetConfigFile));
                 _userSettings = JsonConvert.DeserializeObject<SysproxyConfig>(configContent);
             }
             catch (Exception)

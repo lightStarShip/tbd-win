@@ -131,7 +131,7 @@ namespace tbd.Controller
                     var filename = (string)asset["name"];
                     var browser_download_url = (string)asset["browser_download_url"];
                     var response = await httpClient.GetAsync(browser_download_url);
-                    using (var downloadedFileStream = File.Create(Utils.GetTempPath(filename)))
+                    using (var downloadedFileStream = File.Create(Utils.GetAppDataPath(filename)))
                         await response.Content.CopyToAsync(downloadedFileStream);
                     logger.Info($"Downloaded {filename}.");
                     // store .zip filename
@@ -141,7 +141,7 @@ namespace tbd.Controller
                 logger.Info("Finished downloading.");
                 // notify user
                 CloseVersionUpdatePromptWindow();
-                Process.Start("explorer.exe", $"/select, \"{Utils.GetTempPath(NewReleaseZipFilename)}\"");
+                Process.Start("explorer.exe", $"/select, \"{Utils.GetAppDataPath(NewReleaseZipFilename)}\"");
             }
             catch (Exception e)
             {

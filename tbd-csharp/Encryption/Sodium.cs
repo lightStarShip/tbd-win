@@ -21,7 +21,7 @@ namespace tbd.Encryption
 
         static Sodium()
         {
-            string dllPath = Utils.GetTempPath(DLLNAME);
+            string dllPath = Utils.GetAppDataPath(DLLNAME);
             try
             {
                 FileManager.UncompressFile(dllPath, Resources.libsscrypto_dll);

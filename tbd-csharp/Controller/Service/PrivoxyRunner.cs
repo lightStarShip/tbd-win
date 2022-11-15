@@ -32,7 +32,7 @@ namespace tbd.Controller
                 _uniqueConfigFile = $"privoxy_{_uid}.conf";
                 _privoxyJob = new Job();
 
-                FileManager.UncompressFile(Utils.GetTempPath("ss_privoxy.exe"), Resources.privoxy_exe);
+                FileManager.UncompressFile(Utils.GetAppDataPath("ss_privoxy.exe"), Resources.privoxy_exe);
             }
             catch (IOException e)
             {
@@ -61,7 +61,7 @@ namespace tbd.Controller
                     .Replace("__SOCKS_HOST__", "[::1]")
                     : privoxyConfig.Replace("__PRIVOXY_BIND_IP__", configuration.shareOverLan ? "0.0.0.0" : "127.0.0.1")
                     .Replace("__SOCKS_HOST__", "127.0.0.1");
-                FileManager.ByteArrayToFile(Utils.GetTempPath(_uniqueConfigFile), Encoding.UTF8.GetBytes(privoxyConfig));
+                FileManager.ByteArrayToFile(Utils.GetAppDataPath(_uniqueConfigFile), Encoding.UTF8.GetBytes(privoxyConfig));
 
                 _process = new Process
                 {
@@ -133,7 +133,7 @@ namespace tbd.Controller
                  */
                 var path = process.MainModule.FileName;
 
-                return Utils.GetTempPath("ss_privoxy.exe").Equals(path);
+                return Utils.GetAppDataPath("ss_privoxy.exe").Equals(path);
 
             }
             catch (Exception ex)

@@ -33,7 +33,7 @@ namespace tbd.Controller
 
         public static event ErrorEventHandler Error;
 
-        private static readonly string DATABASE_PATH = Utils.GetTempPath("dlc.dat");
+        private static readonly string DATABASE_PATH = Utils.GetAppDataPath("dlc.dat");
 
         private static readonly string GEOSITE_URL = "https://github.com/v2fly/domain-list-community/raw/release/dlc.dat";
         private static readonly string GEOSITE_SHA256SUM_URL = "https://github.com/v2fly/domain-list-community/raw/release/dlc.dat.sha256sum";

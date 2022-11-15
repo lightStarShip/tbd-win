@@ -27,7 +27,7 @@ namespace tbd.Encryption
 
         static OpenSSL()
         {
-            string dllPath = Utils.GetTempPath(DLLNAME);
+            string dllPath = Utils.GetAppDataPath(DLLNAME);
             try
             {
                 FileManager.UncompressFile(dllPath, Resources.libsscrypto_dll);
