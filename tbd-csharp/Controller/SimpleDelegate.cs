@@ -48,12 +48,16 @@ namespace tbd.Controller
             string dllPath = Utils.GetAppDataPath(DLLNAME);
             try
             {
+                /*if (Environment.Is64BitProcess)
+                    throw new Exception(String.Format("Can't load {0} because this is a 64 bit proccess", dllPath));*/
+               
                 FileManager.UncompressFile(dllPath, Resources.libsimple_dll);
                 if (!DllUtils.SetDllDirectory(Utils.GetAppDataPath()))
                 {
                     throw new System.ComponentModel.Win32Exception();
                 }
                 IntPtr dllHandle = DllUtils.LoadLibrary(dllPath);
+                //IntPtr dllHandle = DllUtils.LoadLibraryEx(dllPath, IntPtr.Zero, 0)
                 if (dllHandle == IntPtr.Zero)
                 {
                     byte[] err = System.Text.Encoding.UTF8.GetBytes($"---------------------->{ Marshal.GetLastWin32Error()}");

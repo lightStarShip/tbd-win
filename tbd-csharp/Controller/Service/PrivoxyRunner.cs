@@ -70,7 +70,7 @@ namespace tbd.Controller
                     {
                         FileName = "ss_privoxy.exe",
                         Arguments = _uniqueConfigFile,
-                        WorkingDirectory = Utils.GetTempPath(),
+                        WorkingDirectory = Utils.GetAppDataPath(),
                         WindowStyle = ProcessWindowStyle.Hidden,
                         UseShellExecute = true,
                         CreateNoWindow = true

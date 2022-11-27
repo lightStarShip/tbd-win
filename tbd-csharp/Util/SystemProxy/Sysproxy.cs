@@ -150,7 +150,7 @@ namespace tbd.Util.SystemProxy
                     // Configure the process using the StartInfo properties.
                     process.StartInfo.FileName = Utils.GetAppDataPath("sysproxy.exe");
                     process.StartInfo.Arguments = arguments;
-                    process.StartInfo.WorkingDirectory = Utils.GetTempPath();
+                    process.StartInfo.WorkingDirectory = Utils.GetAppDataPath();
                     process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                     process.StartInfo.UseShellExecute = false;
                     process.StartInfo.RedirectStandardError = true;
