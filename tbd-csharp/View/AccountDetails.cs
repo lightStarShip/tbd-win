@@ -18,9 +18,14 @@ namespace tbd.View
         {
             InitializeComponent();
             string cid = SimpleDelegate.stripe.cus_id;
+            if (cid == null || cid.Length == 0)
+            {
+                SimpleDelegate.stripe.ReloadStripeBasic();
+                cid = SimpleDelegate.stripe.cus_id;
+            }
             if (cid == null)
             {
-                cid = "";
+                return;
             }
             this.accountID.Text = cid;
             this.bAddress.Text = SimpleDelegate.wallet.Address;

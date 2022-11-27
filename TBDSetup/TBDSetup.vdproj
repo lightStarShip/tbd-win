@@ -6328,7 +6328,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TheBigDipper"
         "ProductCode" = "8:{E9C8C6FF-611C-4A7B-B125-40F4B8B3FEC0}"
-        "PackageCode" = "8:{7939C977-416D-468C-8F7E-BA05A438B9FC}"
+        "PackageCode" = "8:{52447EB9-6545-4D67-A353-C9170C9FF5B8}"
         "UpgradeCode" = "8:{CB16B798-0D42-4C82-8409-7A511A22A43F}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -6450,7 +6450,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E630BB6379BB413EA633B1D92DF32971"
             {
-            "Name" = "8:Shortcut to 主输出 from tbd-csharp (Active)"
+            "Name" = "8:TheBigDipper"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -6464,7 +6464,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F6F1F17666FC47CC875D5619ADF40656"
             {
-            "Name" = "8:Shortcut to 主输出 from tbd-csharp (Active)"
+            "Name" = "8:TheBigDipper"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"

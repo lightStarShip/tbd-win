@@ -52,17 +52,13 @@ namespace tbd.Controller
                     wFileStream.Dispose();
             }
         }
-        private void ReloadStripeBasic()
+        public void ReloadStripeBasic()
         {
-            string cid = this.cus_id;
-            if (cid == null)
-            {
-                cid = "";
-            }
             IntPtr sPtr = SimpleDelegate.StripeBasic(this.walletAddr, "");
             string content = Marshal.PtrToStringAnsi(sPtr);
             if (content == null)
             {
+                logger.Warn("======>>> load stripe basic failed");
                 return;
             }
             Stripe stripe = JsonConvert.DeserializeObject<Stripe>(content, new JsonSerializerSettings()
@@ -72,7 +68,7 @@ namespace tbd.Controller
             });
             stripe.currentNode = this.currentNode;
             stripe.SaveToDisk(this.walletAddr);
-            Console.WriteLine($"======>>>reload stripe basic: [{stripe.cus_id}]");
+            logger.Info($"======>>>reload stripe basic: [{stripe.cus_id}]");
         }
         public static Stripe LoadStripe(string wAddr)
         {
@@ -89,14 +85,20 @@ namespace tbd.Controller
             {
                 content = File.ReadAllText(file_name);
             }
+            Stripe stripe = new Stripe();
+            if (content == null)
+            {
+                stripe.walletAddr = wAddr;
+                return stripe;
+            }
 
-            Stripe stripe = JsonConvert.DeserializeObject<Stripe>(content, new JsonSerializerSettings()
+            stripe = JsonConvert.DeserializeObject<Stripe>(content, new JsonSerializerSettings()
             {
                 ObjectCreationHandling = ObjectCreationHandling.Replace,
                 NullValueHandling = NullValueHandling.Ignore
             });
-            stripe.walletAddr = wAddr;
 
+            stripe.walletAddr = wAddr;
             if (need_save){
                 stripe.SaveToDisk(wAddr);
             }
@@ -111,7 +113,7 @@ namespace tbd.Controller
         public bool IsVip()
         {
             Int64 now = DateTimeOffset.Now.ToUnixTimeSeconds();
-            Console.WriteLine($"======>>> expire day:{expire_day}  now:{now}");
+            logger.Info($"======>>> expire day:{expire_day}  now:{now}");
             return expire_day > now + 5;
         }
 
