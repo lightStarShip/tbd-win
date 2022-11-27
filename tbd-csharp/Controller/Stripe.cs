@@ -61,6 +61,10 @@ namespace tbd.Controller
             }
             IntPtr sPtr = SimpleDelegate.StripeBasic(this.walletAddr, "");
             string content = Marshal.PtrToStringAnsi(sPtr);
+            if (content == null)
+            {
+                return;
+            }
             Stripe stripe = JsonConvert.DeserializeObject<Stripe>(content, new JsonSerializerSettings()
             {
                 ObjectCreationHandling = ObjectCreationHandling.Replace,

@@ -27,7 +27,7 @@ namespace tbd.Controller
 
         private Listener _listener;
         private PACDaemon _pacDaemon;
-        private PACServer _pacServer;
+        //private PACServer _pacServer;
         private Configuration _config;
         private StrategyManager _strategyManager;
         private PrivoxyRunner privoxyRunner;
@@ -188,8 +188,8 @@ namespace tbd.Controller
             _pacDaemon = _pacDaemon ?? new PACDaemon(_config);
             _pacDaemon.PACFileChanged += PacDaemon_PACFileChanged;
             _pacDaemon.UserRuleFileChanged += PacDaemon_UserRuleFileChanged;
-            _pacServer = _pacServer ?? new PACServer(_pacDaemon);
-            _pacServer.UpdatePACURL(_config); // So PACServer works when system proxy disabled.
+            /*_pacServer = _pacServer ?? new PACServer(_pacDaemon);
+            _pacServer.UpdatePACURL(_config);*/ // So PACServer works when system proxy disabled.
 
             GeositeUpdater.ResetEvent();
             GeositeUpdater.UpdateCompleted += PacServer_PACUpdateCompleted;
@@ -221,7 +221,7 @@ namespace tbd.Controller
                 {
                     tcpRelay,
                     udpRelay,
-                    _pacServer,
+                    //_pacServer,
                     new PortForwarder(privoxyRunner.RunningPort)
                 };
                 _listener = new Listener(services);
@@ -330,7 +330,7 @@ namespace tbd.Controller
 
         private void UpdateSystemProxy()
         {
-            SystemProxy.Update(_config, false, _pacServer);
+            //SystemProxy.Update(_config, false, _pacServer);
         }
 
         #endregion
@@ -361,7 +361,7 @@ namespace tbd.Controller
 
         public void CopyPacUrl()
         {
-            Clipboard.SetDataObject(_pacServer.PacUrl);
+           // Clipboard.SetDataObject(_pacServer.PacUrl);
         }
 
         public void SavePACUrl(string pacUrl)

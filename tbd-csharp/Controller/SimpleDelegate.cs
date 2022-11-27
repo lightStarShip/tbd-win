@@ -57,7 +57,8 @@ namespace tbd.Controller
                     throw new System.ComponentModel.Win32Exception();
                 }
                 IntPtr dllHandle = DllUtils.LoadLibrary(dllPath);
-                //IntPtr dllHandle = DllUtils.LoadLibraryEx(dllPath, IntPtr.Zero, 0)
+                //IntPtr dllHandle = DllUtils.LoadLibraryW(dllPath);
+                //IntPtr dllHandle = DllUtils.LoadLibraryEx(dllPath, IntPtr.Zero, 0);
                 if (dllHandle == IntPtr.Zero)
                 {
                     byte[] err = System.Text.Encoding.UTF8.GetBytes($"---------------------->{ Marshal.GetLastWin32Error()}");

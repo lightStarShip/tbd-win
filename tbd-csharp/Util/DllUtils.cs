@@ -12,6 +12,9 @@ public class DllUtils
 
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern IntPtr LoadLibraryEx(string lpFileName, IntPtr hFile, uint dwFlags);
+    
+    [DllImport("kernel32", SetLastError = true)]
+    public static extern IntPtr LoadLibraryW([MarshalAs(UnmanagedType.LPWStr)] string lpFileName);
 
     [DllImport("Kernel32.dll", SetLastError = true)]
     public static extern IntPtr LoadLibraryA(string path);
