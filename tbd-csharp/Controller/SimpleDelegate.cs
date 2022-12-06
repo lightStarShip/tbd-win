@@ -5,7 +5,6 @@ using NLog;
 using tbd.Properties;
 using tbd.Util;
 using Newtonsoft.Json;
-using System.Windows.Forms;
 using Microsoft.Win32;
 
 namespace tbd.Controller

@@ -113,6 +113,7 @@ namespace tbd
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.ApplicationExit += Application_ApplicationExit;
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+            SystemEvents.SessionEnding += SystemEvents_LogOffOrShutDown;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             AutoStartup.RegisterForRestart(true);
@@ -189,6 +190,11 @@ namespace tbd
             }
         }
 
+        private static void SystemEvents_LogOffOrShutDown(object sender, SessionEndingEventArgs e)
+        {
+            SimpleDelegate.SetSysProxy(false);
+        }
+
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
             switch (e.Mode)
@@ -228,6 +234,7 @@ namespace tbd
             // detach static event handlers
             Application.ApplicationExit -= Application_ApplicationExit;
             SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
+            SystemEvents.SessionEnding -= SystemEvents_LogOffOrShutDown;
             Application.ThreadException -= Application_ThreadException;
             HotKeys.Destroy();
             if (MainController != null)

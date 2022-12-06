@@ -32,7 +32,7 @@ namespace tbd.Controller
 
         public event EventHandler CheckUpdateCompleted;
 
-        public const string Version = "1.0.1";
+        public const string Version = "1.0.2";
         private readonly Version _version;
 
         public UpdateChecker()

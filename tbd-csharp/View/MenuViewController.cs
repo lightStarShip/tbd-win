@@ -312,7 +312,7 @@ namespace tbd.View
 
                 CreateMenuItem("Updates...", new EventHandler(this.checkUpdatesItem_Click)),
                 CreateMenuItem("Show Logs...", new EventHandler(this.ShowLogItem_Click)),
-                CreateMenuItem("About...", new EventHandler(this.AboutItem_Click)),
+                CreateMenuItem("About("+UpdateChecker.Version+")...", new EventHandler(this.AboutItem_Click)),
                 new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(this.Quit_Click))
             });
