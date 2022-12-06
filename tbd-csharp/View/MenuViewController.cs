@@ -37,6 +37,7 @@ namespace tbd.View
         private MenuItem SeperatorItem;
         private MenuItem ServersItem;
         private MenuItem startStopItem;
+        private MenuItem globalModeItem;
         private MenuItem curNodeItem;
 
         private ConfigForm configForm;
@@ -290,6 +291,7 @@ namespace tbd.View
                 }),
                 CreateMenuItem("Account", new EventHandler(this.ShowAccountDetails)),
                 CreateMenuItem("Command Line", new EventHandler(this.CopyCmdLine)),
+                this.globalModeItem = CreateMenuItem("Global Mode", new EventHandler(this.GlobalMode)),
                 new MenuItem("-"),
                 /*this.AutoStartupItem = CreateMenuItem("Start on Boot", new EventHandler(this.AutoStartupItem_Click)),
                 this.ProtocolHandlerItem = CreateMenuItem("Associate ss:// Links", new EventHandler(this.ProtocolHandlerItem_Click)),
@@ -628,6 +630,21 @@ namespace tbd.View
             Clipboard.SetText(SimpleDelegate.CmdLine);
         }
 
+        private void GlobalMode(object sender, EventArgs e)
+        {
+            bool is_global =  SimpleDelegate.IsGlobalWin();
+            if (is_global)
+            {
+                SimpleDelegate.SetGlobalWin(false);
+                this.globalModeItem.Checked = false;
+            }
+            else
+            {
+                SimpleDelegate.SetGlobalWin(true);
+                this.globalModeItem.Checked = true;
+            }
+        }
+        
         private void Quit_Click(object sender, EventArgs e)
         {
             SimpleDelegate.StopProxy();

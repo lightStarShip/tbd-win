@@ -193,7 +193,13 @@ namespace tbd.Controller
         
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
         public static extern IntPtr ChangeSrvWin(string addr, string ip);
-        
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+        public static extern bool IsGlobalWin();
+
+        [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl, SetLastError = true)]
+        public static extern void SetGlobalWin(bool global);
+
         #endregion
 
         #region system proxy settings
